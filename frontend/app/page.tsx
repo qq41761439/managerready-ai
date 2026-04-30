@@ -220,12 +220,19 @@ export default function Home() {
                 </button>
               </div>
               <pre>{result.output_text}</pre>
-              <div className="refine-actions">
-                {refineActions.map(([value, label]) => (
-                  <button className="ghost" key={value} onClick={() => handleRefine(value)} disabled={isLoading}>
-                    {label}
-                  </button>
-                ))}
+              <div className="refine-panel" aria-label="Quick improvement actions">
+                <div className="refine-panel-head">
+                  <span>Quick improve</span>
+                  <small>Adjust this draft with one click</small>
+                </div>
+                <div className="refine-actions">
+                  {refineActions.map(([value, label]) => (
+                    <button className="refine-button" key={value} onClick={() => handleRefine(value)} disabled={isLoading}>
+                      <span className="refine-button-icon">↻</span>
+                      {label}
+                    </button>
+                  ))}
+                </div>
               </div>
               <p className="status">
                 Model route: {result.metadata.provider} / {result.metadata.model} · {result.metadata.latency_ms}ms

@@ -242,11 +242,72 @@ pre {
   line-height: 1.6;
 }
 
-.refine-actions {
+.refine-panel {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid rgba(139, 92, 246, 0.46);
+  border-radius: 20px;
+  background:
+    linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(6, 182, 212, 0.1)),
+    rgba(255, 255, 255, 0.045);
+}
+
+.refine-panel-head {
   display: flex;
-  flex-wrap: wrap;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.refine-panel-head span {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.refine-panel-head small {
+  color: var(--muted);
+}
+
+.refine-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.refine-button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
-  margin-top: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.11);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  font-weight: 700;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.refine-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(6, 182, 212, 0.72);
+  background: rgba(6, 182, 212, 0.18);
+}
+
+.refine-button-icon {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  font-size: 13px;
 }
 
 .example {
@@ -279,7 +340,8 @@ pre {
     grid-template-columns: 1fr;
   }
 
-  .toolbar {
+  .toolbar,
+  .refine-actions {
     grid-template-columns: 1fr;
   }
 
