@@ -1,0 +1,239 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { generateReport, refineReport, type GenerateResponse } from "../lib/api";
+
+const SAMPLE_NOTES = `- Fixed checkout bug and improved payment error handling
+- 跟设计师确认了 dashboard 改版方向
+- Analytics release is almost ready, waiting for API review
+- Next week: ship analytics, validate dashboard UX, unblock API issue`;
+
+const scenarios = [
+  ["weekly_update", "Weekly Update"],
+  ["manager_update", "Manager Update"],
+  ["client_update", "Client Update"],
+  ["engineering_update", "Engineering Update"],
+  ["product_update", "Product Update"],
+  ["standup_summary", "Standup Summary"],
+  ["promotion_summary", "Promotion Summary"],
+];
+
+const tones = [
+  ["formal", "Formal"],
+  ["semi_formal", "Semi-formal"],
+  ["data_driven", "Data-driven"],
+];
+
+const lengths = [
+  ["concise", "Concise"],
+  ["standard", "Standard"],
+  ["detailed", "Detailed"],
+];
+
+const refineActions = [
+  ["make_more_formal", "Make it more formal"],
+  ["make_shorter", "Make it shorter"],
+  ["make_more_data_driven", "Make it data-driven"],
+  ["improve_clarity", "Improve clarity"],
+];
+
+export default function Home() {
+  const [inputText, setInputText] = useState("");
+  const [scenario, setScenario] = useState("manager_update");
+  const [tone, setTone] = useState("formal");
+  const [length, setLength] = useState("standard");
+  const [result, setResult] = useState<GenerateResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [anonymousId, setAnonymousId] = useState("local-anonymous");
+
+  useEffect(() => {
+    const key = "managerready_anonymous_id";
+    const existing = window.localStorage.getItem(key);
+    if (existing) {
+      setAnonymousId(existing);
+      return;
+    }
+    const created = crypto.randomUUID();
+    window.localStorage.setItem(key, created);
+    setAnonymousId(created);
+  }, []);
+
+  const canSubmit = useMemo(() => inputText.trim().length > 0 && !isLoading, [inputText, isLoading]);
+
+  async function handleGenerate() {
+    setIsLoading(true);
+    setError(null);
+    setCopied(false);
+    try {
+      const response = await generateReport(
+        {
+          input_text: inputText,
+          scenario,
+          tone,
+          length,
+        },
+        anonymousId,
+      );
+      setResult(response);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Generation failed");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleRefine(actionType: string) {
+    if (!result) return;
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await refineReport(
+        {
+          original_input: inputText,
+          current_output: result.output_text,
+          action_type: actionType,
+        },
+        anonymousId,
+      );
+      setResult(response);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Refine failed");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleCopy() {
+    if (!result) return;
+    await navigator.clipboard.writeText(result.output_text);
+    setCopied(true);
+  }
+
+  return (
+    <main className="page">
+      <nav className="nav">
+        <div className="logo">
+          <span className="logo-mark">M</span>
+          <span>ManagerReady AI</span>
+        </div>
+        <div className="nav-links">
+          <span>Free preview</span>
+          <span>Pro coming next</span>
+        </div>
+      </nav>
+
+      <section className="hero">
+        <div>
+          <span className="badge">For non-native English professionals</span>
+          <h1>Turn rough work notes into manager-ready English updates.</h1>
+          <p className="lead">
+            Paste messy Chinese, English, or mixed bullet points. Get a polished weekly update,
+            manager update, client update, or promotion-ready summary in seconds.
+          </p>
+          <ul className="bullets">
+            <li>Designed for remote teams, PMs, engineers, operators, and freelancers.</li>
+            <li>Provider-agnostic AI backend: easy to switch models by quality and cost.</li>
+            <li>Python FastAPI backend, ready for auth, payments, history, and analytics.</li>
+          </ul>
+
+          <div className="example">
+            <div className="example-box">
+              <h3>Before</h3>
+              <p>修复 checkout bug；dashboard 跟设计对齐；analytics 下周上线；API 有 blocker。</p>
+            </div>
+            <div className="example-box">
+              <h3>After</h3>
+              <p>
+                This week, I improved the checkout flow, aligned with design on the dashboard
+                redesign, and prepared the analytics release while tracking one API dependency.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="card generator">
+          <div className="toolbar">
+            <label>
+              Scenario
+              <select value={scenario} onChange={(event) => setScenario(event.target.value)}>
+                {scenarios.map(([value, label]) => (
+                  <option value={value} key={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Tone
+              <select value={tone} onChange={(event) => setTone(event.target.value)}>
+                {tones.map(([value, label]) => (
+                  <option value={value} key={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Length
+              <select value={length} onChange={(event) => setLength(event.target.value)}>
+                {lengths.map(([value, label]) => (
+                  <option value={value} key={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <label>
+            Rough notes
+            <textarea
+              value={inputText}
+              maxLength={5000}
+              placeholder="Enter your work highlights, bullet points, blockers, or just rough thoughts..."
+              onChange={(event) => setInputText(event.target.value)}
+            />
+          </label>
+
+          <div className="actions">
+            <button className="primary" onClick={handleGenerate} disabled={!canSubmit}>
+              {isLoading ? "Working..." : "Generate update"}
+            </button>
+            <button className="secondary" onClick={() => setInputText(SAMPLE_NOTES)} disabled={isLoading}>
+              Try sample
+            </button>
+            <span className="status">
+              {result ? `Free generations left: ${result.usage.remaining}` : "Free preview: 5/day"}
+            </span>
+          </div>
+
+          {error ? <div className="error">{error}</div> : null}
+
+          {result ? (
+            <section className="output">
+              <div className="output-head">
+                <strong>Generated update</strong>
+                <button className="secondary" onClick={handleCopy}>
+                  {copied ? "Copied" : "Copy"}
+                </button>
+              </div>
+              <pre>{result.output_text}</pre>
+              <div className="refine-actions">
+                {refineActions.map(([value, label]) => (
+                  <button className="ghost" key={value} onClick={() => handleRefine(value)} disabled={isLoading}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <p className="status">
+                Model route: {result.metadata.provider} / {result.metadata.model} · {result.metadata.latency_ms}ms
+              </p>
+            </section>
+          ) : null}
+        </div>
+      </section>
+    </main>
+  );
+}
