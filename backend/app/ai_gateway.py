@@ -66,19 +66,23 @@ class OpenAICompatibleProvider:
         api_key: str,
         model: str,
         timeout_seconds: int = 30,
+        extra_headers: dict[str, str] | None = None,
     ):
         self.name = name
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
         self.model = model
         self.timeout_seconds = timeout_seconds
+        self.extra_headers = extra_headers or {}
 
     async def complete(self, messages: list[dict[str, str]], purpose: str) -> AIResult:
         start = time.perf_counter()
+        headers = {"Authorization": f"Bearer {self.api_key}"}
+        headers.update(self.extra_headers)
         async with httpx.AsyncClient(timeout=self.timeout_seconds, trust_env=False) as client:
             response = await client.post(
                 f"{self.base_url}/chat/completions",
-                headers={"Authorization": f"Bearer {self.api_key}"},
+                headers=headers,
                 json={
                     "model": self.model,
                     "messages": messages,
@@ -239,11 +243,18 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
         provider = _auto_detect_provider()
 
     if provider == "openai_compatible":
+        extra_headers = {}
+        if os.getenv("AI_PROVIDER_NAME") == "openrouter":
+            extra_headers = {
+                "HTTP-Referer": "https://managerready.ai",
+                "X-Title": "ManagerReady AI",
+            }
         primary = OpenAICompatibleProvider(
             name=os.getenv("AI_PROVIDER_NAME", "openai-compatible"),
             base_url=os.environ["AI_BASE_URL"],
             api_key=os.environ["AI_API_KEY"],
             model=os.environ["AI_MODEL"],
+            extra_headers=extra_headers,
         )
         fallback = MockProvider(name="mock-fallback") if os.getenv("AI_ENABLE_MOCK_FALLBACK") == "1" else None
         return AIGateway(primary=primary, fallback=fallback)
@@ -254,6 +265,10 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
             base_url="https://openrouter.ai/api/v1",
             api_key=os.environ["OPENROUTER_API_KEY"],
             model=os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini"),
+            extra_headers={
+                "HTTP-Referer": "https://managerready.ai",
+                "X-Title": "ManagerReady AI",
+            },
         )
         fallback = MockProvider(name="mock-fallback") if os.getenv("AI_ENABLE_MOCK_FALLBACK") == "1" else None
         return AIGateway(primary=primary, fallback=fallback)
