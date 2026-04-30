@@ -7,8 +7,9 @@ This repo is a first working slice for the product idea:
 - Frontend: Next.js + TypeScript
 - Backend: Python FastAPI
 - AI layer: provider-agnostic model gateway
-- Current default provider: mock provider for safe local development
-- Ready to swap to any OpenAI-compatible provider through environment variables
+- Current local provider: Ollama with `qwen3:8b` when `backend/.env` sets `AI_PROVIDER=ollama`
+- Mock provider remains available for safe local development
+- Ready to swap to OpenAI-compatible, OpenAI, Anthropic, or Ollama providers through environment variables
 
 ## Project structure
 
@@ -60,10 +61,24 @@ Copy the example file:
 cp .env.example .env
 ```
 
-Mock provider is enabled by default:
+Mock provider is available for safe development:
 
 ```text
 AI_PROVIDER=mock
+```
+
+Local Ollama provider, no cloud key required:
+
+```text
+AI_PROVIDER=ollama
+OLLAMA_MODEL=qwen3:8b
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+```
+
+Auto provider selection is also supported:
+
+```text
+AI_PROVIDER=auto
 ```
 
 For an OpenAI-compatible provider:

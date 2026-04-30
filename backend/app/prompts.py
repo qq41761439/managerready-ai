@@ -61,10 +61,13 @@ Length: {length_label}
 
 Rules:
 - Accept mixed Chinese and English notes.
-- Do not invent unsupported metrics. If metrics are missing, use qualitative wording.
+- Use only facts explicitly provided by the user.
+- Do not invent unsupported metrics, QA status, launch status, owners, customer impact, or completed work.
+- If metrics or blockers are missing, say they were not specified or use qualitative wording.
 - Make the writing clear, polished, and business-appropriate.
 - Prefer concrete outcomes, blockers, and next steps.
-- Return only the final report, no explanations.
+- Return only the final report, no explanations, no internal reasoning, no <think> tags.
+- If you are a reasoning model, use /no_think mode.
 
 Required structure:
 # {scenario_label}
