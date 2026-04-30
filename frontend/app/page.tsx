@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { generateReport, refineReport, type GenerateResponse } from "../lib/api";
+import { identifyAnonymousUser, initAnalytics, trackEvent } from "../lib/analytics";
 
 const SAMPLE_NOTES = `- Fixed checkout bug and improved payment error handling
 - 跟设计师确认了 dashboard 改版方向
@@ -47,22 +48,49 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [anonymousId, setAnonymousId] = useState("local-anonymous");
-
+  const hasTrackedPageView = useRef(false);
   useEffect(() => {
     const key = "managerready_anonymous_id";
     const existing = window.localStorage.getItem(key);
-    if (existing) {
-      setAnonymousId(existing);
-      return;
+    const resolvedAnonymousId = existing ?? crypto.randomUUID();
+
+    if (!existing) {
+      window.localStorage.setItem(key, resolvedAnonymousId);
     }
-    const created = crypto.randomUUID();
-    window.localStorage.setItem(key, created);
-    setAnonymousId(created);
+
+    setAnonymousId(resolvedAnonymousId);
+    initAnalytics();
+    identifyAnonymousUser(resolvedAnonymousId);
+
+    if (!hasTrackedPageView.current) {
+      trackEvent("page_view", {
+        path: window.location.pathname,
+        search: window.location.search,
+      });
+      hasTrackedPageView.current = true;
+    }
   }, []);
 
   const canSubmit = useMemo(() => inputText.trim().length > 0 && !isLoading, [inputText, isLoading]);
 
+  function handleTrySample() {
+    setInputText(SAMPLE_NOTES);
+    trackEvent("try_sample_clicked", {
+      scenario,
+      tone,
+      length,
+      sample_length: SAMPLE_NOTES.length,
+    });
+  }
+
   async function handleGenerate() {
+    const inputLength = inputText.trim().length;
+    trackEvent("generate_clicked", {
+      scenario,
+      tone,
+      length,
+      input_length: inputLength,
+    });
     setIsLoading(true);
     setError(null);
     setCopied(false);
@@ -77,8 +105,27 @@ export default function Home() {
         anonymousId,
       );
       setResult(response);
+      trackEvent("generate_success", {
+        scenario,
+        tone,
+        length,
+        input_length: inputLength,
+        output_length: response.output_text.length,
+        usage_remaining: response.usage.remaining,
+        provider: response.metadata.provider,
+        model: response.metadata.model,
+        latency_ms: response.metadata.latency_ms,
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Generation failed");
+      const message = err instanceof Error ? err.message : "Generation failed";
+      setError(message);
+      trackEvent("generate_failed", {
+        scenario,
+        tone,
+        length,
+        input_length: inputLength,
+        error: message,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -86,6 +133,10 @@ export default function Home() {
 
   async function handleRefine(actionType: string) {
     if (!result) return;
+    trackEvent("refine_clicked", {
+      action_type: actionType,
+      output_length: result.output_text.length,
+    });
     setIsLoading(true);
     setError(null);
     try {
@@ -98,8 +149,21 @@ export default function Home() {
         anonymousId,
       );
       setResult(response);
+      trackEvent("refine_success", {
+        action_type: actionType,
+        output_length: response.output_text.length,
+        usage_remaining: response.usage.remaining,
+        provider: response.metadata.provider,
+        model: response.metadata.model,
+        latency_ms: response.metadata.latency_ms,
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Refine failed");
+      const message = err instanceof Error ? err.message : "Refine failed";
+      setError(message);
+      trackEvent("refine_failed", {
+        action_type: actionType,
+        error: message,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -109,6 +173,12 @@ export default function Home() {
     if (!result) return;
     await navigator.clipboard.writeText(result.output_text);
     setCopied(true);
+    trackEvent("copy_clicked", {
+      output_length: result.output_text.length,
+      scenario,
+      tone,
+      length,
+    });
   }
 
   return (
@@ -201,7 +271,7 @@ export default function Home() {
             <button className="primary" onClick={handleGenerate} disabled={!canSubmit}>
               {isLoading ? "Working..." : "Generate update"}
             </button>
-            <button className="secondary" onClick={() => setInputText(SAMPLE_NOTES)} disabled={isLoading}>
+            <button className="secondary" onClick={handleTrySample} disabled={isLoading}>
               Try sample
             </button>
             <span className="status">

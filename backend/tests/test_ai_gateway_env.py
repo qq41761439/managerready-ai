@@ -20,6 +20,10 @@ def test_build_gateway_auto_uses_openrouter_when_key_is_available(monkeypatch):
 
 def test_build_gateway_auto_uses_openai_when_openrouter_is_missing(monkeypatch):
     monkeypatch.delenv("AI_PROVIDER", raising=False)
+    monkeypatch.delenv("AI_API_KEY", raising=False)
+    monkeypatch.delenv("AI_BASE_URL", raising=False)
+    monkeypatch.delenv("AI_MODEL", raising=False)
+    monkeypatch.delenv("AI_PROVIDER_NAME", raising=False)
     monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 

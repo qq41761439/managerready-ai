@@ -13,6 +13,7 @@
     "@types/react-dom": "19.0.2",
     "next": "^16.2.4",
     "postcss": "^8.5.12",
+    "posthog-js": "^1.372.5",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "typescript": "5.7.2"

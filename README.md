@@ -41,6 +41,7 @@ curl http://localhost:8000/health
 
 ```bash
 cd frontend
+cp .env.example .env.local
 npm install
 npm run typecheck
 npm run build
@@ -98,6 +99,26 @@ Frontend API base URL:
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 ```
 
+PostHog analytics is optional. For local frontend development, put these values in
+`frontend/.env.local`. Leave the key empty to disable analytics locally.
+
+```text
+NEXT_PUBLIC_POSTHOG_KEY=phc_your_project_api_key
+NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+```
+
+Tracked product events:
+
+- `page_view`
+- `try_sample_clicked`
+- `generate_clicked`
+- `generate_success`
+- `generate_failed`
+- `refine_clicked`
+- `refine_success`
+- `refine_failed`
+- `copy_clicked`
+
 ## Implemented in this first slice
 
 - Landing page
@@ -109,6 +130,7 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 - Copy output
 - Refine output actions
 - Anonymous daily quota in backend memory
+- PostHog analytics event hooks
 - Provider-agnostic AI gateway
 - Mock provider for development
 - OpenAI-compatible provider scaffold
@@ -121,5 +143,4 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 3. Report history
 4. Feedback collection
 5. Creem payment link + webhook
-6. PostHog/Plausible analytics
-7. SEO pages for key use cases
+6. SEO pages for key use cases
