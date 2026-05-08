@@ -66,7 +66,7 @@ class OpenAICompatibleProvider:
         api_key: str,
         model: str,
         timeout_seconds: int = 30,
-        reasoning_effort: str | None = None,
+        reasoning_effort: str | None = "none",
         extra_headers: dict[str, str] | None = None,
     ):
         self.name = name
@@ -257,7 +257,7 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
 
     if provider == "openai_compatible":
         timeout_seconds = _env_int("AI_TIMEOUT_SECONDS", 90)
-        reasoning_effort = os.getenv("AI_REASONING_EFFORT")
+        reasoning_effort = os.getenv("AI_REASONING_EFFORT", "none")
         extra_headers = {}
         if os.getenv("AI_PROVIDER_NAME") == "openrouter":
             extra_headers = {
@@ -278,7 +278,7 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
 
     if provider == "openrouter":
         timeout_seconds = _env_int("AI_TIMEOUT_SECONDS", 90)
-        reasoning_effort = os.getenv("AI_REASONING_EFFORT")
+        reasoning_effort = os.getenv("AI_REASONING_EFFORT", "none")
         primary = OpenAICompatibleProvider(
             name="openrouter",
             base_url="https://openrouter.ai/api/v1",

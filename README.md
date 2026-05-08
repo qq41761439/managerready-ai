@@ -91,7 +91,6 @@ AI_BASE_URL=https://openrouter.ai/api/v1
 AI_API_KEY=***
 AI_MODEL=your_model
 AI_TIMEOUT_SECONDS=90
-AI_REASONING_EFFORT=none
 AI_ENABLE_MOCK_FALLBACK=1
 ```
 
