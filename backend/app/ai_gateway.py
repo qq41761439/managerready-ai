@@ -66,6 +66,7 @@ class OpenAICompatibleProvider:
         api_key: str,
         model: str,
         timeout_seconds: int = 30,
+        max_tokens: int = 900,
         extra_headers: dict[str, str] | None = None,
     ):
         self.name = name
@@ -73,6 +74,7 @@ class OpenAICompatibleProvider:
         self.api_key = api_key
         self.model = model
         self.timeout_seconds = timeout_seconds
+        self.max_tokens = max_tokens
         self.extra_headers = extra_headers or {}
 
     async def complete(self, messages: list[dict[str, str]], purpose: str) -> AIResult:
@@ -88,6 +90,7 @@ class OpenAICompatibleProvider:
                         "model": self.model,
                         "messages": messages,
                         "temperature": 0.4,
+                        "max_tokens": self.max_tokens,
                     },
                 )
         except httpx.TimeoutException as exc:
@@ -249,6 +252,7 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
 
     if provider == "openai_compatible":
         timeout_seconds = _env_int("AI_TIMEOUT_SECONDS", 90)
+        max_tokens = _env_int("AI_MAX_TOKENS", 900)
         extra_headers = {}
         if os.getenv("AI_PROVIDER_NAME") == "openrouter":
             extra_headers = {
@@ -261,6 +265,7 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
             api_key=os.environ["AI_API_KEY"],
             model=os.environ["AI_MODEL"],
             timeout_seconds=timeout_seconds,
+            max_tokens=max_tokens,
             extra_headers=extra_headers,
         )
         fallback = MockProvider(name="mock-fallback") if os.getenv("AI_ENABLE_MOCK_FALLBACK") == "1" else None
@@ -268,12 +273,14 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
 
     if provider == "openrouter":
         timeout_seconds = _env_int("AI_TIMEOUT_SECONDS", 90)
+        max_tokens = _env_int("AI_MAX_TOKENS", 900)
         primary = OpenAICompatibleProvider(
             name="openrouter",
             base_url="https://openrouter.ai/api/v1",
             api_key=os.environ["OPENROUTER_API_KEY"],
             model=os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini"),
             timeout_seconds=timeout_seconds,
+            max_tokens=max_tokens,
             extra_headers={
                 "HTTP-Referer": "https://managerready.ai",
                 "X-Title": "ManagerReady AI",

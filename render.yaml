@@ -21,6 +21,8 @@ services:
         value: tencent/hy3-preview:free
       - key: AI_TIMEOUT_SECONDS
         value: "90"
+      - key: AI_MAX_TOKENS
+        value: "900"
       - key: AI_ENABLE_MOCK_FALLBACK
         value: "0"
       - key: OPENROUTER_API_KEY
