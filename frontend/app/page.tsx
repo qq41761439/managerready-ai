@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { generateReport, refineReport, type GenerateResponse } from "../lib/api";
+import { checkUsage, generateReport, refineReport, type GenerateResponse, type UsageStatus } from "../lib/api";
 import { identifyAnonymousUser, initAnalytics, trackEvent } from "../lib/analytics";
 
 const SAMPLE_NOTES = `- Fixed checkout bug and improved payment error handling
@@ -52,6 +52,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [anonymousId, setAnonymousId] = useState("local-anonymous");
+  const [usageStatus, setUsageStatus] = useState<UsageStatus | null>(null);
+  const [isUsageLoading, setIsUsageLoading] = useState(true);
   const hasTrackedPageView = useRef(false);
   useEffect(() => {
     const key = "managerready_anonymous_id";
@@ -77,6 +79,10 @@ export default function Home() {
     }
 
     setAnonymousId(resolvedAnonymousId);
+    checkUsage(resolvedAnonymousId)
+      .then(setUsageStatus)
+      .catch(() => setUsageStatus(null))
+      .finally(() => setIsUsageLoading(false));
     initAnalytics();
     identifyAnonymousUser(resolvedAnonymousId);
 
@@ -99,7 +105,20 @@ export default function Home() {
     }
   }, []);
 
-  const canSubmit = useMemo(() => inputText.trim().length > 0 && !isLoading, [inputText, isLoading]);
+  const canSubmit = useMemo(
+    () =>
+      inputText.trim().length > 0 &&
+      !isLoading &&
+      !isUsageLoading &&
+      usageStatus?.allowed !== false,
+    [inputText, isLoading, isUsageLoading, usageStatus],
+  );
+
+  const usageLabel = useMemo(() => {
+    if (isUsageLoading) return "Checking free uses...";
+    if (!usageStatus) return "Free preview: 5/day";
+    return `Free generations left: ${usageStatus.remaining}`;
+  }, [isUsageLoading, usageStatus]);
 
   function handleTrySample() {
     setInputText(SAMPLE_NOTES);
@@ -133,6 +152,7 @@ export default function Home() {
         anonymousId,
       );
       setResult(response);
+      setUsageStatus(response.usage);
       trackEvent("generate_success", {
         scenario,
         tone,
@@ -147,6 +167,9 @@ export default function Home() {
     } catch (err) {
       const message = err instanceof Error ? err.message : "Generation failed";
       setError(message);
+      checkUsage(anonymousId)
+        .then(setUsageStatus)
+        .catch(() => undefined);
       trackEvent("generate_failed", {
         scenario,
         tone,
@@ -304,7 +327,7 @@ export default function Home() {
               Try sample
             </button>
             <span className="status">
-              {result ? `Free generations left: ${result.usage.remaining}` : "Free preview: 5/day"}
+              {usageLabel}
             </span>
           </div>
 
