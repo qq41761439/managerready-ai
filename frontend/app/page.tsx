@@ -241,6 +241,7 @@ export default function Home() {
         </div>
         <div className="nav-links">
           <span>Free preview</span>
+          <a href="/use-cases">Use cases</a>
           <a href="/templates">Templates</a>
           <span>Pro coming next</span>
         </div>

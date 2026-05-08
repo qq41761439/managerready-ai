@@ -29,6 +29,7 @@ export default function TemplatesPage() {
           <span>ManagerReady AI</span>
         </Link>
         <div className="nav-links">
+          <Link href="/use-cases">Use cases</Link>
           <Link href="/">Generator</Link>
         </div>
       </nav>

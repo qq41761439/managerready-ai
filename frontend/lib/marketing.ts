@@ -178,6 +178,262 @@ export const seoPages: SeoPage[] = [
       },
     ],
   },
+  {
+    slug: "weekly-update-generator-for-engineers",
+    scenario: "engineering_update",
+    title: "Weekly Update Generator for Engineers",
+    metaTitle: "Weekly Update Generator for Engineers | ManagerReady AI",
+    description:
+      "Write clear engineering weekly updates from commits, incidents, PRs, blockers, and next-week technical plans.",
+    audience: "software engineers who need to report progress in English",
+    pain: "Engineering work is easy to describe in tickets, but hard to summarize for managers who need impact and risk.",
+    before:
+      "merged auth cleanup, fixed flaky checkout test, investigated Redis timeout, waiting infra review",
+    after:
+      "This week, I merged the authentication cleanup, fixed a flaky checkout test, and investigated Redis timeout issues. The main dependency is an infrastructure review. Next week, I plan to complete the review follow-up and monitor checkout test stability.",
+    useCases: [
+      "Engineering manager updates",
+      "Sprint-end summaries",
+      "Async team reports",
+      "Release and blocker communication",
+    ],
+    faqs: [
+      {
+        question: "Can engineers paste ticket-style notes?",
+        answer:
+          "Yes. Short ticket notes, commit summaries, and blocker bullets work well as input.",
+      },
+      {
+        question: "Will it make engineering updates less technical?",
+        answer:
+          "It keeps necessary technical detail but frames it around progress, impact, blockers, and next steps.",
+      },
+    ],
+  },
+  {
+    slug: "weekly-update-generator-for-product-managers",
+    scenario: "product_update",
+    title: "Weekly Update Generator for Product Managers",
+    metaTitle: "Weekly Update Generator for Product Managers | ManagerReady AI",
+    description:
+      "Turn product discovery notes, launch work, stakeholder updates, and risks into polished English weekly updates.",
+    audience: "product managers working with cross-functional or remote teams",
+    pain: "Product updates must connect decisions, user feedback, launch risks, and next steps without becoming too long.",
+    before:
+      "interviewed 5 beta users, pricing page copy drafted, dashboard scope still under discussion, next week align launch checklist",
+    after:
+      "This week, I interviewed five beta users, drafted pricing page copy, and continued dashboard scope discussions. The key risk is that dashboard scope is not yet finalized. Next week, I plan to align the launch checklist and confirm open scope decisions.",
+    useCases: [
+      "Product weekly updates",
+      "Stakeholder summaries",
+      "Launch readiness notes",
+      "User research recap updates",
+    ],
+    faqs: [
+      {
+        question: "Can it summarize product discovery work?",
+        answer:
+          "Yes. Include interviews, insights, decisions, open questions, and planned follow-ups.",
+      },
+      {
+        question: "Can it handle stakeholder language?",
+        answer:
+          "Yes. Product Update is written to be clear for engineering, design, business, and leadership audiences.",
+      },
+    ],
+  },
+  {
+    slug: "freelancer-client-update-generator",
+    scenario: "client_update",
+    title: "Freelancer Client Update Generator",
+    metaTitle: "Freelancer Client Update Generator | ManagerReady AI",
+    description:
+      "Create professional English client updates for freelance projects, milestones, blockers, and delivery plans.",
+    audience: "freelancers who communicate with English-speaking clients",
+    pain: "Freelance client updates need to build trust, show progress, and communicate delays without sounding defensive.",
+    before:
+      "landing page almost done, Stripe issue fixed, waiting client images, can review staging tomorrow",
+    after:
+      "The landing page is nearly complete, and the Stripe issue has been fixed. We are waiting on the final client images before the staging review. If the assets are confirmed today, staging can be reviewed tomorrow.",
+    useCases: [
+      "Weekly client emails",
+      "Milestone progress notes",
+      "Delay and blocker updates",
+      "Freelance delivery reports",
+    ],
+    faqs: [
+      {
+        question: "Can it make my update sound more professional?",
+        answer:
+          "Yes. It turns rough delivery notes into clear, confident, client-appropriate English.",
+      },
+      {
+        question: "Does it work for agencies too?",
+        answer:
+          "Yes. The same format works for freelancers, agencies, and small delivery teams.",
+      },
+    ],
+  },
+  {
+    slug: "non-native-english-work-update-generator",
+    scenario: "manager_update",
+    title: "Non-Native English Work Update Generator",
+    metaTitle: "Non-Native English Work Update Generator | ManagerReady AI",
+    description:
+      "Convert mixed-language work notes into natural, manager-ready English updates for non-native professionals.",
+    audience: "non-native English speakers working in global teams",
+    pain: "You may know exactly what you did, but still spend too long making the English sound natural and professional.",
+    before:
+      "修了登录 bug, checked data issue with ops, release blocked by approval, next week finish dashboard QA",
+    after:
+      "This week, I fixed a login bug, investigated a data issue with the operations team, and prepared dashboard QA. The release is currently blocked by approval. Next week, I plan to complete dashboard QA and follow up on the approval process.",
+    useCases: [
+      "Mixed Chinese and English notes",
+      "Global team status updates",
+      "Manager-ready English summaries",
+      "Professional writing support",
+    ],
+    faqs: [
+      {
+        question: "Can I paste multilingual notes?",
+        answer:
+          "Yes. ManagerReady AI is designed for rough multilingual work notes and outputs polished English.",
+      },
+      {
+        question: "Is this a grammar checker?",
+        answer:
+          "No. It restructures your work update, highlights progress and blockers, and makes the result manager-ready.",
+      },
+    ],
+  },
+  {
+    slug: "remote-work-status-update-generator",
+    scenario: "weekly_update",
+    title: "Remote Work Status Update Generator",
+    metaTitle: "Remote Work Status Update Generator | ManagerReady AI",
+    description:
+      "Write concise async status updates for remote teams, distributed managers, and cross-time-zone collaboration.",
+    audience: "remote workers who rely on async written updates",
+    pain: "Remote updates need enough context to replace a meeting, but not so much detail that people stop reading.",
+    before:
+      "finished onboarding doc, timezone issue with vendor, waiting QA result, tomorrow update release checklist",
+    after:
+      "I finished the onboarding documentation and identified a timezone coordination issue with the vendor. The release is waiting on QA results. Tomorrow, I will update the release checklist and follow up on the vendor timing issue.",
+    useCases: [
+      "Async daily updates",
+      "Remote weekly summaries",
+      "Cross-time-zone handoffs",
+      "Distributed team progress notes",
+    ],
+    faqs: [
+      {
+        question: "What makes a good remote status update?",
+        answer:
+          "It should state progress, blockers, decisions needed, and next actions clearly enough for teammates in other time zones.",
+      },
+      {
+        question: "Can it replace a standup note?",
+        answer:
+          "Yes. Use the Standup Summary or Weekly Update format depending on how much detail you need.",
+      },
+    ],
+  },
+  {
+    slug: "status-update-email-generator",
+    scenario: "manager_update",
+    title: "Status Update Email Generator",
+    metaTitle: "Status Update Email Generator | ManagerReady AI",
+    description:
+      "Draft professional English status update emails from rough work notes, blockers, and next steps.",
+    audience: "professionals who need to send clear progress emails",
+    pain: "Status emails need a polished structure, clear priorities, and the right tone for managers or stakeholders.",
+    before:
+      "data migration done, docs not done, legal review pending, next step coordinate release date",
+    after:
+      "The data migration is complete. Documentation is still in progress, and legal review remains pending. The next step is to coordinate the release date once the review status is confirmed.",
+    useCases: [
+      "Manager status emails",
+      "Stakeholder progress emails",
+      "Project follow-up notes",
+      "Launch readiness updates",
+    ],
+    faqs: [
+      {
+        question: "Can I use the output as an email?",
+        answer:
+          "Yes. You can copy the result into email or chat, then adjust greeting and sign-off as needed.",
+      },
+      {
+        question: "Can it make updates more concise?",
+        answer:
+          "Yes. Choose Concise or use the Make it shorter refine action after generating.",
+      },
+    ],
+  },
+  {
+    slug: "project-status-update-generator",
+    scenario: "client_update",
+    title: "Project Status Update Generator",
+    metaTitle: "Project Status Update Generator | ManagerReady AI",
+    description:
+      "Summarize project progress, milestones, risks, blockers, and next steps in clear professional English.",
+    audience: "project owners, operators, consultants, and delivery teams",
+    pain: "Project status updates must be specific enough to be useful and structured enough to be read quickly.",
+    before:
+      "phase 1 complete, vendor API unstable, finance approval pending, next week confirm rollout plan",
+    after:
+      "Phase 1 is complete. The main risk is vendor API instability, and finance approval is still pending. Next week, the priority is to confirm the rollout plan and align dependencies before moving forward.",
+    useCases: [
+      "Project milestone reports",
+      "Risk and blocker summaries",
+      "Stakeholder status notes",
+      "Delivery planning updates",
+    ],
+    faqs: [
+      {
+        question: "What should a project status update include?",
+        answer:
+          "Include progress, milestones, blockers, risks, decisions needed, and next steps.",
+      },
+      {
+        question: "Can it handle incomplete project notes?",
+        answer:
+          "Yes. It organizes what you provide and avoids inventing missing metrics or decisions.",
+      },
+    ],
+  },
+  {
+    slug: "work-summary-generator",
+    scenario: "weekly_update",
+    title: "Work Summary Generator",
+    metaTitle: "Work Summary Generator | ManagerReady AI",
+    description:
+      "Turn rough task notes into a clear English work summary for managers, teams, clients, or performance reviews.",
+    audience: "professionals who need to summarize their work clearly",
+    pain: "Daily tasks often look small in isolation, but a good work summary shows progress, impact, and priorities.",
+    before:
+      "answered support questions, fixed report export, helped new teammate, started dashboard QA checklist",
+    after:
+      "This week, I supported customer questions, fixed report export, helped onboard a new teammate, and started the dashboard QA checklist. These efforts improved support responsiveness and prepared the team for the next dashboard review.",
+    useCases: [
+      "Weekly work summaries",
+      "Self-review notes",
+      "Team update drafts",
+      "Manager-ready progress reports",
+    ],
+    faqs: [
+      {
+        question: "Can it turn small tasks into a better summary?",
+        answer:
+          "Yes. It groups related tasks and explains them in terms of outcomes, blockers, and next steps.",
+      },
+      {
+        question: "Can I use it for self-reviews?",
+        answer:
+          "Yes. For review season, try the Promotion Summary or Performance Review Summary page.",
+      },
+    ],
+  },
 ];
 
 export const updateTemplates = [

@@ -3,7 +3,7 @@ import { seoPages, SITE_URL } from "../lib/marketing";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const staticRoutes = ["", "/templates"];
+  const staticRoutes = ["", "/use-cases", "/templates"];
 
   return [
     ...staticRoutes.map((route) => ({
