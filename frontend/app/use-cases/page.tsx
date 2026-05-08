@@ -28,6 +28,7 @@ export default function UseCasesPage() {
           <span>ManagerReady AI</span>
         </Link>
         <div className="nav-links">
+          <Link href="/examples">Examples</Link>
           <Link href="/templates">Templates</Link>
           <Link href="/">Generator</Link>
         </div>

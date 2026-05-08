@@ -75,6 +75,7 @@ export default async function SeoGeneratorPage({ params }: SeoGeneratorPageProps
         </Link>
         <div className="nav-links">
           <Link href="/use-cases">Use cases</Link>
+          <Link href="/examples">Examples</Link>
           <Link href="/templates">Templates</Link>
           <Link href="/">Generator</Link>
         </div>

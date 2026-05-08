@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { checkUsage, generateReport, refineReport, type GenerateResponse, type UsageStatus } from "../lib/api";
 import { identifyAnonymousUser, initAnalytics, trackEvent } from "../lib/analytics";
+import { SITE_URL } from "../lib/marketing";
 
 const SAMPLE_NOTES = `- Fixed checkout bug and improved payment error handling
 - 跟设计师确认了 dashboard 改版方向
@@ -234,6 +235,25 @@ export default function Home() {
 
   return (
     <main className="page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "ManagerReady AI",
+            applicationCategory: "ProductivityApplication",
+            operatingSystem: "Web",
+            url: SITE_URL,
+            description: "Turn rough multilingual work notes into manager-ready English updates.",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD",
+            },
+          }),
+        }}
+      />
       <nav className="nav">
         <div className="logo">
           <span className="logo-mark">M</span>
@@ -242,6 +262,7 @@ export default function Home() {
         <div className="nav-links">
           <span>Free preview</span>
           <a href="/use-cases">Use cases</a>
+          <a href="/examples">Examples</a>
           <a href="/templates">Templates</a>
           <span>Pro coming next</span>
         </div>

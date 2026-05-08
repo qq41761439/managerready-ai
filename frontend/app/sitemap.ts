@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
+import { guidePages } from "../lib/geo";
 import { seoPages, SITE_URL } from "../lib/marketing";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const staticRoutes = ["", "/use-cases", "/templates"];
+  const staticRoutes = ["", "/use-cases", "/examples", "/templates", "/llms.txt"];
 
   return [
     ...staticRoutes.map((route) => ({
@@ -17,6 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.8,
+    })),
+    ...guidePages.map((page) => ({
+      url: `${SITE_URL}/guides/${page.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.75,
     })),
   ];
 }

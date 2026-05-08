@@ -30,6 +30,7 @@ export default function TemplatesPage() {
         </Link>
         <div className="nav-links">
           <Link href="/use-cases">Use cases</Link>
+          <Link href="/examples">Examples</Link>
           <Link href="/">Generator</Link>
         </div>
       </nav>
