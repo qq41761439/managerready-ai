@@ -18,6 +18,20 @@ def test_build_gateway_auto_uses_openrouter_when_key_is_available(monkeypatch):
     assert gateway.primary.model == "openai/gpt-4o-mini"
 
 
+def test_build_gateway_passes_reasoning_effort(monkeypatch):
+    monkeypatch.setenv("AI_PROVIDER", "openai_compatible")
+    monkeypatch.setenv("AI_PROVIDER_NAME", "openrouter")
+    monkeypatch.setenv("AI_API_KEY", "test-key")
+    monkeypatch.setenv("AI_BASE_URL", "https://openrouter.ai/api/v1")
+    monkeypatch.setenv("AI_MODEL", "test-model")
+    monkeypatch.setenv("AI_REASONING_EFFORT", "none")
+
+    gateway = build_gateway_from_env(load_env=False)
+
+    assert isinstance(gateway.primary, OpenAICompatibleProvider)
+    assert gateway.primary.reasoning_effort == "none"
+
+
 def test_build_gateway_auto_uses_openai_when_openrouter_is_missing(monkeypatch):
     monkeypatch.delenv("AI_PROVIDER", raising=False)
     monkeypatch.delenv("AI_API_KEY", raising=False)

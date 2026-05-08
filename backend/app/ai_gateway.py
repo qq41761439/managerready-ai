@@ -66,7 +66,7 @@ class OpenAICompatibleProvider:
         api_key: str,
         model: str,
         timeout_seconds: int = 30,
-        max_tokens: int = 900,
+        reasoning_effort: str | None = None,
         extra_headers: dict[str, str] | None = None,
     ):
         self.name = name
@@ -74,7 +74,7 @@ class OpenAICompatibleProvider:
         self.api_key = api_key
         self.model = model
         self.timeout_seconds = timeout_seconds
-        self.max_tokens = max_tokens
+        self.reasoning_effort = reasoning_effort
         self.extra_headers = extra_headers or {}
 
     async def complete(self, messages: list[dict[str, str]], purpose: str) -> AIResult:
@@ -83,15 +83,20 @@ class OpenAICompatibleProvider:
         headers.update(self.extra_headers)
         try:
             async with httpx.AsyncClient(timeout=self.timeout_seconds, trust_env=False) as client:
+                payload = {
+                    "model": self.model,
+                    "messages": messages,
+                    "temperature": 0.4,
+                }
+                if self.reasoning_effort:
+                    payload["reasoning"] = {
+                        "effort": self.reasoning_effort,
+                        "exclude": True,
+                    }
                 response = await client.post(
                     f"{self.base_url}/chat/completions",
                     headers=headers,
-                    json={
-                        "model": self.model,
-                        "messages": messages,
-                        "temperature": 0.4,
-                        "max_tokens": self.max_tokens,
-                    },
+                    json=payload,
                 )
         except httpx.TimeoutException as exc:
             raise ProviderError(f"Provider {self.name} timed out after {self.timeout_seconds}s") from exc
@@ -252,7 +257,7 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
 
     if provider == "openai_compatible":
         timeout_seconds = _env_int("AI_TIMEOUT_SECONDS", 90)
-        max_tokens = _env_int("AI_MAX_TOKENS", 900)
+        reasoning_effort = os.getenv("AI_REASONING_EFFORT")
         extra_headers = {}
         if os.getenv("AI_PROVIDER_NAME") == "openrouter":
             extra_headers = {
@@ -265,7 +270,7 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
             api_key=os.environ["AI_API_KEY"],
             model=os.environ["AI_MODEL"],
             timeout_seconds=timeout_seconds,
-            max_tokens=max_tokens,
+            reasoning_effort=reasoning_effort,
             extra_headers=extra_headers,
         )
         fallback = MockProvider(name="mock-fallback") if os.getenv("AI_ENABLE_MOCK_FALLBACK") == "1" else None
@@ -273,14 +278,14 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
 
     if provider == "openrouter":
         timeout_seconds = _env_int("AI_TIMEOUT_SECONDS", 90)
-        max_tokens = _env_int("AI_MAX_TOKENS", 900)
+        reasoning_effort = os.getenv("AI_REASONING_EFFORT")
         primary = OpenAICompatibleProvider(
             name="openrouter",
             base_url="https://openrouter.ai/api/v1",
             api_key=os.environ["OPENROUTER_API_KEY"],
             model=os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini"),
             timeout_seconds=timeout_seconds,
-            max_tokens=max_tokens,
+            reasoning_effort=reasoning_effort,
             extra_headers={
                 "HTTP-Referer": "https://managerready.ai",
                 "X-Title": "ManagerReady AI",

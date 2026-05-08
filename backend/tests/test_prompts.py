@@ -20,7 +20,7 @@ def test_generation_prompt_preserves_user_notes_and_selected_options():
     assert "Concise" in messages[0]["content"]
     assert messages[1] == {
         "role": "user",
-        "content": "- Fixed checkout bug\n- 跟设计确认 dashboard 改版",
+        "content": "- Fixed checkout bug\n- 跟设计确认 dashboard 改版\n\n/no_think",
     }
 
 
@@ -47,3 +47,4 @@ def test_refine_prompt_includes_current_output_and_action():
     assert "Make it more data-driven" in messages[0]["content"]
     assert "Weekly Update" in messages[1]["content"]
     assert "- shipped analytics" in messages[1]["content"]
+    assert "/no_think" in messages[1]["content"]

@@ -87,7 +87,7 @@ A short summary of the week.
 
     return [
         {"role": "system", "content": system_prompt},
-        {"role": "user", "content": input_text},
+        {"role": "user", "content": f"{input_text}\n\n/no_think"},
     ]
 
 
@@ -114,6 +114,8 @@ Original rough notes:
 
 Current output:
 {current_output.strip()}
+
+/no_think
 """.strip()
 
     return [
