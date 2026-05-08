@@ -79,18 +79,23 @@ class OpenAICompatibleProvider:
         start = time.perf_counter()
         headers = {"Authorization": f"Bearer {self.api_key}"}
         headers.update(self.extra_headers)
-        async with httpx.AsyncClient(timeout=self.timeout_seconds, trust_env=False) as client:
-            response = await client.post(
-                f"{self.base_url}/chat/completions",
-                headers=headers,
-                json={
-                    "model": self.model,
-                    "messages": messages,
-                    "temperature": 0.4,
-                },
-            )
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout_seconds, trust_env=False) as client:
+                response = await client.post(
+                    f"{self.base_url}/chat/completions",
+                    headers=headers,
+                    json={
+                        "model": self.model,
+                        "messages": messages,
+                        "temperature": 0.4,
+                    },
+                )
+        except httpx.TimeoutException as exc:
+            raise ProviderError(f"Provider {self.name} timed out after {self.timeout_seconds}s") from exc
+        except httpx.HTTPError as exc:
+            raise ProviderError(f"Provider {self.name} request failed: {exc}") from exc
         if response.status_code >= 400:
-            raise ProviderError(f"Provider {self.name} returned {response.status_code}")
+            raise ProviderError(f"Provider {self.name} returned {response.status_code}: {response.text}")
 
         payload = response.json()
         content = clean_model_output(payload["choices"][0]["message"]["content"])
@@ -243,6 +248,7 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
         provider = _auto_detect_provider()
 
     if provider == "openai_compatible":
+        timeout_seconds = _env_int("AI_TIMEOUT_SECONDS", 90)
         extra_headers = {}
         if os.getenv("AI_PROVIDER_NAME") == "openrouter":
             extra_headers = {
@@ -254,17 +260,20 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
             base_url=os.environ["AI_BASE_URL"],
             api_key=os.environ["AI_API_KEY"],
             model=os.environ["AI_MODEL"],
+            timeout_seconds=timeout_seconds,
             extra_headers=extra_headers,
         )
         fallback = MockProvider(name="mock-fallback") if os.getenv("AI_ENABLE_MOCK_FALLBACK") == "1" else None
         return AIGateway(primary=primary, fallback=fallback)
 
     if provider == "openrouter":
+        timeout_seconds = _env_int("AI_TIMEOUT_SECONDS", 90)
         primary = OpenAICompatibleProvider(
             name="openrouter",
             base_url="https://openrouter.ai/api/v1",
             api_key=os.environ["OPENROUTER_API_KEY"],
             model=os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini"),
+            timeout_seconds=timeout_seconds,
             extra_headers={
                 "HTTP-Referer": "https://managerready.ai",
                 "X-Title": "ManagerReady AI",
@@ -312,6 +321,16 @@ def _auto_detect_provider() -> str:
     if os.getenv("ANTHROPIC_API_KEY"):
         return "anthropic"
     return "mock"
+
+
+def _env_int(name: str, default: int) -> int:
+    raw_value = os.getenv(name)
+    if raw_value is None:
+        return default
+    try:
+        return int(raw_value)
+    except ValueError:
+        return default
 
 
 def clean_model_output(content: str) -> str:

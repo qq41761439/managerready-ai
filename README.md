@@ -88,10 +88,13 @@ For an OpenAI-compatible provider:
 AI_PROVIDER=openai_compatible
 AI_PROVIDER_NAME=openrouter
 AI_BASE_URL=https://openrouter.ai/api/v1
-AI_API_KEY=your_api_key
+AI_API_KEY=***
 AI_MODEL=your_model
+AI_TIMEOUT_SECONDS=90
 AI_ENABLE_MOCK_FALLBACK=1
 ```
+
+For slower free models on OpenRouter, increase `AI_TIMEOUT_SECONDS` to avoid local generation requests timing out too early.
 
 Frontend API base URL:
 

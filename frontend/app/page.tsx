@@ -279,6 +279,10 @@ export default function Home() {
             </span>
           </div>
 
+          {isLoading ? (
+            <p className="status">Generating with the free model... this may take 20–60 seconds.</p>
+          ) : null}
+
           {error ? <div className="error">{error}</div> : null}
 
           {result ? (

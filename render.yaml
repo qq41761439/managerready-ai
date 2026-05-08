@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: managerready-ai-api
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: AI_PROVIDER
+        value: openai_compatible
+      - key: AI_PROVIDER_NAME
+        value: openrouter
+      - key: AI_BASE_URL
+        value: https://openrouter.ai/api/v1
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_MODEL
+        value: tencent/hy3-preview:free
+      - key: AI_TIMEOUT_SECONDS
+        value: "90"
+      - key: AI_ENABLE_MOCK_FALLBACK
+        value: "0"
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://your-frontend.vercel.app,http://localhost:3000
