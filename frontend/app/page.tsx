@@ -38,6 +38,10 @@ const refineActions = [
   ["improve_clarity", "Improve clarity"],
 ];
 
+function hasOption(options: string[][], value: string | null) {
+  return Boolean(value && options.some(([optionValue]) => optionValue === value));
+}
+
 export default function Home() {
   const [inputText, setInputText] = useState("");
   const [scenario, setScenario] = useState("manager_update");
@@ -53,9 +57,23 @@ export default function Home() {
     const key = "managerready_anonymous_id";
     const existing = window.localStorage.getItem(key);
     const resolvedAnonymousId = existing ?? crypto.randomUUID();
+    const params = new URLSearchParams(window.location.search);
+    const scenarioParam = params.get("scenario");
+    const toneParam = params.get("tone");
+    const lengthParam = params.get("length");
 
     if (!existing) {
       window.localStorage.setItem(key, resolvedAnonymousId);
+    }
+
+    if (hasOption(scenarios, scenarioParam)) {
+      setScenario(scenarioParam as string);
+    }
+    if (hasOption(tones, toneParam)) {
+      setTone(toneParam as string);
+    }
+    if (hasOption(lengths, lengthParam)) {
+      setLength(lengthParam as string);
     }
 
     setAnonymousId(resolvedAnonymousId);
@@ -68,6 +86,16 @@ export default function Home() {
         search: window.location.search,
       });
       hasTrackedPageView.current = true;
+    }
+
+    if (scenarioParam || toneParam || lengthParam || params.get("utm_source")) {
+      trackEvent("generator_prefilled_from_url", {
+        scenario: hasOption(scenarios, scenarioParam) ? scenarioParam : undefined,
+        tone: hasOption(tones, toneParam) ? toneParam : undefined,
+        length: hasOption(lengths, lengthParam) ? lengthParam : undefined,
+        utm_source: params.get("utm_source"),
+        utm_campaign: params.get("utm_campaign"),
+      });
     }
   }, []);
 
@@ -190,6 +218,7 @@ export default function Home() {
         </div>
         <div className="nav-links">
           <span>Free preview</span>
+          <a href="/templates">Templates</a>
           <span>Pro coming next</span>
         </div>
       </nav>

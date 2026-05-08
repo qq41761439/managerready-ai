@@ -10,7 +10,10 @@ export type AnalyticsEventName =
   | "refine_clicked"
   | "refine_success"
   | "refine_failed"
-  | "copy_clicked";
+  | "copy_clicked"
+  | "seo_cta_clicked"
+  | "template_copied"
+  | "generator_prefilled_from_url";
 
 const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
