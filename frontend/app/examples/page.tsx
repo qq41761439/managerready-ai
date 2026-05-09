@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { workExamples } from "../../lib/geo";
+import { growthExamplePages } from "../../lib/growth";
 import { SITE_URL } from "../../lib/marketing";
 
 export const metadata: Metadata = {
@@ -28,10 +28,10 @@ export default function ExamplesPage() {
     description:
       "Before-and-after examples of rough work notes converted into manager-ready English updates.",
     url: `${SITE_URL}/examples`,
-    hasPart: workExamples.map((example) => ({
+    hasPart: growthExamplePages.map((example) => ({
       "@type": "CreativeWork",
       name: example.title,
-      text: `${example.before}\n\n${example.after}`,
+      text: example.examples.map((item) => `${item.before}\n\n${item.after}`).join("\n\n"),
     })),
   };
 
@@ -45,6 +45,7 @@ export default function ExamplesPage() {
         <div className="nav-links">
           <Link href="/use-cases">Use cases</Link>
           <Link href="/templates">Templates</Link>
+          <Link href="/answers">Answers</Link>
           <Link href="/">Generator</Link>
         </div>
       </nav>
@@ -76,7 +77,7 @@ export default function ExamplesPage() {
       </section>
 
       <section className="section example-list">
-        {workExamples.map((example) => (
+        {growthExamplePages.map((example) => (
           <article className="example-card" key={example.title}>
             <div className="section-head">
               <span className="badge">{example.title}</span>
@@ -85,17 +86,20 @@ export default function ExamplesPage() {
             <div className="example seo-example">
               <div className="example-box">
                 <h3>Rough notes</h3>
-                <p>{example.before}</p>
+                <p>{example.examples[0].before}</p>
               </div>
               <div className="example-box">
                 <h3>Manager-ready update</h3>
-                <p>{example.after}</p>
+                <p>{example.examples[0].after}</p>
               </div>
             </div>
             <div className="actions">
+              <Link className="secondary" href={`/examples/${example.slug}`}>
+                View examples
+              </Link>
               <Link
                 className="secondary"
-                href={`/?scenario=${example.scenario}&utm_source=examples&utm_campaign=${example.scenario}`}
+                href={`/?scenario=${example.scenario}&utm_source=examples&utm_campaign=${example.slug}`}
               >
                 Use this format
               </Link>

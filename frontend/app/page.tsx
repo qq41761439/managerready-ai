@@ -264,6 +264,7 @@ export default function Home() {
           <a href="/use-cases">Use cases</a>
           <a href="/examples">Examples</a>
           <a href="/templates">Templates</a>
+          <a href="/answers">Answers</a>
           <span>Pro coming next</span>
         </div>
       </nav>

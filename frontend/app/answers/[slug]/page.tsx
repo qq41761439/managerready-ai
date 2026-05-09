@@ -1,28 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getGuidePage, guidePages } from "../../../lib/geo";
+import { getGrowthAnswerPage, growthAnswerPages } from "../../../lib/growth";
 import { SITE_URL } from "../../../lib/marketing";
 
-type GuidePageProps = {
+type AnswerPageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return guidePages.map((page) => ({ slug: page.slug }));
+  return growthAnswerPages.map((page) => ({ slug: page.slug }));
 }
 
-export async function generateMetadata({ params }: GuidePageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: AnswerPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const page = getGuidePage(slug);
+  const page = getGrowthAnswerPage(slug);
 
   if (!page) {
     return {};
   }
 
-  const url = `${SITE_URL}/guides/${page.slug}`;
+  const url = `${SITE_URL}/answers/${page.slug}`;
   return {
     title: page.metaTitle,
     description: page.description,
@@ -44,27 +44,27 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
   };
 }
 
-export default async function GuidePage({ params }: GuidePageProps) {
+export default async function AnswerPage({ params }: AnswerPageProps) {
   const { slug } = await params;
-  const page = getGuidePage(slug);
+  const page = getGrowthAnswerPage(slug);
 
   if (!page) {
     notFound();
   }
 
-  const guideUrl = `${SITE_URL}/guides/${page.slug}`;
+  const generatorHref = `/?scenario=${page.scenario}&utm_source=answer&utm_campaign=${page.slug}`;
   const schema = [
     {
       "@context": "https://schema.org",
-      "@type": "HowTo",
-      name: page.title,
-      description: page.description,
-      url: guideUrl,
-      step: page.steps.map((step, index) => ({
-        "@type": "HowToStep",
-        position: index + 1,
-        text: step,
-      })),
+      "@type": "QAPage",
+      mainEntity: {
+        "@type": "Question",
+        name: page.title,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: page.answer,
+        },
+      },
     },
     {
       "@context": "https://schema.org",
@@ -90,6 +90,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
         <div className="nav-links">
           <Link href="/use-cases">Use cases</Link>
           <Link href="/examples">Examples</Link>
+          <Link href="/templates">Templates</Link>
           <Link href="/answers">Answers</Link>
           <Link href="/">Generator</Link>
         </div>
@@ -98,12 +99,12 @@ export default async function GuidePage({ params }: GuidePageProps) {
       <article>
         <section className="seo-hero">
           <div>
-            <span className="badge">Guide</span>
+            <span className="badge">Answer</span>
             <h1>{page.title}</h1>
-            <p className="lead">{page.intro}</p>
+            <p className="lead">{page.description}</p>
             <div className="actions">
-              <Link className="primary" href="/?utm_source=guide&utm_campaign=work-update-guide">
-                Try the generator
+              <Link className="primary" href={generatorHref}>
+                Try ManagerReady AI
               </Link>
               <Link className="secondary" href="/examples">
                 View examples
@@ -111,35 +112,34 @@ export default async function GuidePage({ params }: GuidePageProps) {
             </div>
           </div>
           <div className="seo-panel">
-            <h2>Quick answer</h2>
-            <p>{page.description}</p>
+            <h2>Short answer</h2>
+            <p>{page.answer}</p>
           </div>
         </section>
 
         <section className="section seo-grid">
           <div>
-            <span className="badge">Structure</span>
-            <h2>What to include</h2>
-            <ol className="numbered-list">
-              {page.steps.map((step) => (
-                <li key={step}>{step}</li>
+            <span className="badge">Key points</span>
+            <h2>What matters</h2>
+            <ul className="bullets">
+              {page.keyPoints.map((point) => (
+                <li key={point}>{point}</li>
               ))}
-            </ol>
+            </ul>
           </div>
           <div className="seo-panel">
-            <h2>Use ManagerReady AI when</h2>
-            <ul className="bullets">
-              <li>Your notes are messy or multilingual.</li>
-              <li>You need a manager-ready English draft quickly.</li>
-              <li>You want consistent sections and tone.</li>
-            </ul>
+            <h2>Best next step</h2>
+            <p>
+              Paste rough notes into the generator, choose the matching work scenario, and review
+              the draft before sending it to a manager, client, or team.
+            </p>
           </div>
         </section>
 
         <section className="section">
           <div className="section-head">
             <span className="badge">Example</span>
-            <h2>Before and after</h2>
+            <h2>From rough notes to a clear update</h2>
           </div>
           <div className="example seo-example">
             <div className="example-box">
@@ -168,6 +168,14 @@ export default async function GuidePage({ params }: GuidePageProps) {
           </div>
         </section>
       </article>
+
+      <section className="section final-cta">
+        <h2>Try it with your own work notes</h2>
+        <p>Use a few bullets. ManagerReady AI will turn them into structured English.</p>
+        <Link className="primary" href={generatorHref}>
+          Generate an update
+        </Link>
+      </section>
 
       <script
         type="application/ld+json"

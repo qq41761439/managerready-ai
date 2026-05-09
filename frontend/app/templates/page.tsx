@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { TemplateCopyButton } from "../marketing/TemplateCopyButton";
-import { SITE_URL, updateTemplates } from "../../lib/marketing";
+import { growthTemplatePages } from "../../lib/growth";
+import { SITE_URL } from "../../lib/marketing";
 
 export const metadata: Metadata = {
   title: "Manager-Ready English Update Templates | ManagerReady AI",
@@ -31,6 +32,7 @@ export default function TemplatesPage() {
         <div className="nav-links">
           <Link href="/use-cases">Use cases</Link>
           <Link href="/examples">Examples</Link>
+          <Link href="/answers">Answers</Link>
           <Link href="/">Generator</Link>
         </div>
       </nav>
@@ -59,7 +61,7 @@ export default function TemplatesPage() {
       </section>
 
       <section className="section template-grid">
-        {updateTemplates.map((template) => (
+        {growthTemplatePages.map((template) => (
           <article className="template-card" key={template.title}>
             <div>
               <span className="badge">{template.title}</span>
@@ -69,7 +71,13 @@ export default function TemplatesPage() {
               <TemplateCopyButton title={template.title} template={template.template} />
               <Link
                 className="secondary"
-                href={`/?scenario=${template.scenario}&utm_source=templates&utm_campaign=${template.scenario}`}
+                href={`/templates/${template.slug}`}
+              >
+                Read guide
+              </Link>
+              <Link
+                className="secondary"
+                href={`/?scenario=${template.scenario}&utm_source=templates&utm_campaign=${template.slug}`}
               >
                 Use in generator
               </Link>

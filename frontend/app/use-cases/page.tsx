@@ -30,6 +30,7 @@ export default function UseCasesPage() {
         <div className="nav-links">
           <Link href="/examples">Examples</Link>
           <Link href="/templates">Templates</Link>
+          <Link href="/answers">Answers</Link>
           <Link href="/">Generator</Link>
         </div>
       </nav>

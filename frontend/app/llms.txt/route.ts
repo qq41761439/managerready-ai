@@ -1,4 +1,5 @@
 import { guidePages } from "../../lib/geo";
+import { growthAnswerPages, growthExamplePages, growthTemplatePages } from "../../lib/growth";
 import { seoPages, SITE_URL } from "../../lib/marketing";
 
 export function GET() {
@@ -24,12 +25,22 @@ Main pages:
 - ${SITE_URL}/use-cases
 - ${SITE_URL}/examples
 - ${SITE_URL}/templates
+- ${SITE_URL}/answers
 
 Use case pages:
 ${seoPages.map((page) => `- ${SITE_URL}/${page.slug}: ${page.description}`).join("\n")}
 
 Guide pages:
 ${guidePages.map((page) => `- ${SITE_URL}/guides/${page.slug}: ${page.description}`).join("\n")}
+
+Template pages:
+${growthTemplatePages.map((page) => `- ${SITE_URL}/templates/${page.slug}: ${page.description}`).join("\n")}
+
+Example pages:
+${growthExamplePages.map((page) => `- ${SITE_URL}/examples/${page.slug}: ${page.description}`).join("\n")}
+
+Answer pages:
+${growthAnswerPages.map((page) => `- ${SITE_URL}/answers/${page.slug}: ${page.description}`).join("\n")}
 `;
 
   return new Response(body, {
