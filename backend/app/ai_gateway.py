@@ -10,6 +10,8 @@ from typing import Protocol
 import httpx
 from dotenv import load_dotenv
 
+from app.openrouter_free_models import OPENROUTER_FREE_FALLBACK_MODELS
+
 
 class ProviderError(RuntimeError):
     pass
@@ -357,6 +359,10 @@ def _env_int(name: str, default: int) -> int:
     raw_value = os.getenv(name)
     if raw_value is None:
         return default
+    try:
+        return int(raw_value)
+    except ValueError:
+        return default
 
 
 def _env_list(name: str) -> list[str]:
@@ -365,18 +371,13 @@ def _env_list(name: str) -> list[str]:
 
 
 def _openrouter_fallback_models(configured_models: list[str]) -> list[str]:
-    default_models = ["nvidia/nemotron-3-super-120b-a12b:free"]
     seen = set()
     models: list[str] = []
-    for model in [*configured_models, *default_models]:
+    for model in [*configured_models, *OPENROUTER_FREE_FALLBACK_MODELS]:
         if model not in seen:
             seen.add(model)
             models.append(model)
     return models
-    try:
-        return int(raw_value)
-    except ValueError:
-        return default
 
 
 def clean_model_output(content: str) -> str:

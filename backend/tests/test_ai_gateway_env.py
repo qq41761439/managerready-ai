@@ -1,6 +1,7 @@
 import os
 
 from app.ai_gateway import OpenAICompatibleProvider, build_gateway_from_env, load_environment_files
+from app.openrouter_free_models import OPENROUTER_FREE_FALLBACK_MODELS
 
 
 def test_build_gateway_auto_uses_openrouter_when_key_is_available(monkeypatch):
@@ -31,7 +32,7 @@ def test_build_gateway_passes_reasoning_effort(monkeypatch):
 
     assert isinstance(gateway.primary, OpenAICompatibleProvider)
     assert gateway.primary.reasoning_effort == "none"
-    assert gateway.primary.fallback_models == ["nvidia/nemotron-3-super-120b-a12b:free"]
+    assert gateway.primary.fallback_models == OPENROUTER_FREE_FALLBACK_MODELS
 
 
 def test_build_gateway_passes_openrouter_fallback_models(monkeypatch):
@@ -40,15 +41,34 @@ def test_build_gateway_passes_openrouter_fallback_models(monkeypatch):
     monkeypatch.setenv("AI_API_KEY", "test-key")
     monkeypatch.setenv("AI_BASE_URL", "https://openrouter.ai/api/v1")
     monkeypatch.setenv("AI_MODEL", "old-free-model")
-    monkeypatch.setenv("AI_FALLBACK_MODELS", "custom/free-model,nvidia/nemotron-3-super-120b-a12b:free")
+    monkeypatch.setenv(
+        "AI_FALLBACK_MODELS",
+        "custom/free-model,nvidia/nemotron-3-super-120b-a12b:free",
+    )
 
     gateway = build_gateway_from_env(load_env=False)
 
     assert isinstance(gateway.primary, OpenAICompatibleProvider)
+    nemotron_model = "nvidia/nemotron-3-super-120b-a12b:free"
     assert gateway.primary.fallback_models == [
         "custom/free-model",
-        "nvidia/nemotron-3-super-120b-a12b:free",
+        nemotron_model,
+        *[model for model in OPENROUTER_FREE_FALLBACK_MODELS if model != nemotron_model],
     ]
+
+
+def test_build_gateway_passes_timeout_seconds(monkeypatch):
+    monkeypatch.setenv("AI_PROVIDER", "openai_compatible")
+    monkeypatch.setenv("AI_PROVIDER_NAME", "openrouter")
+    monkeypatch.setenv("AI_API_KEY", "test-key")
+    monkeypatch.setenv("AI_BASE_URL", "https://openrouter.ai/api/v1")
+    monkeypatch.setenv("AI_MODEL", "test-model")
+    monkeypatch.setenv("AI_TIMEOUT_SECONDS", "123")
+
+    gateway = build_gateway_from_env(load_env=False)
+
+    assert isinstance(gateway.primary, OpenAICompatibleProvider)
+    assert gateway.primary.timeout_seconds == 123
 
 
 def test_build_gateway_allows_reasoning_effort_override(monkeypatch):

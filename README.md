@@ -90,11 +90,20 @@ AI_PROVIDER_NAME=openrouter
 AI_BASE_URL=https://openrouter.ai/api/v1
 AI_API_KEY=***
 AI_MODEL=your_model
+AI_FALLBACK_MODELS=comma,separated,free,fallback,models
 AI_TIMEOUT_SECONDS=90
 AI_ENABLE_MOCK_FALLBACK=1
 ```
 
 For slower free models on OpenRouter, increase `AI_TIMEOUT_SECONDS` to avoid local generation requests timing out too early.
+OpenRouter free model availability changes often. The generated fallback list lives in
+`backend/app/openrouter_free_models.py` and can be refreshed with:
+
+```bash
+python3 scripts/update_openrouter_free_models.py
+```
+
+GitHub Actions also runs this refresh daily and commits changes when OpenRouter's free model list changes.
 
 Frontend API base URL:
 
