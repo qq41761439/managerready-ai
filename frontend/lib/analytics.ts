@@ -13,6 +13,11 @@ export type AnalyticsEventName =
   | "copy_clicked"
   | "seo_cta_clicked"
   | "template_copied"
+  | "template_used"
+  | "example_used"
+  | "answer_cta_clicked"
+  | "guide_cta_clicked"
+  | "quota_reached"
   | "generator_prefilled_from_url";
 
 const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;

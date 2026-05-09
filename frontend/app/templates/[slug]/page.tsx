@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { GrowthCta } from "../../marketing/GrowthCta";
 import { TemplateCopyButton } from "../../marketing/TemplateCopyButton";
 import { getGrowthTemplatePage, growthTemplatePages } from "../../../lib/growth";
 import { SITE_URL } from "../../../lib/marketing";
@@ -89,10 +90,20 @@ export default async function TemplateDetailPage({ params }: TemplateDetailPageP
           <h1>{page.title}</h1>
           <p className="lead">{page.description}</p>
           <div className="actions">
-            <TemplateCopyButton title={page.title} template={page.template} />
-            <Link className="primary" href={generatorHref}>
-              Use in generator
-            </Link>
+            <TemplateCopyButton
+              title={page.title}
+              template={page.template}
+              sourcePage="template-detail"
+              sourceSlug={page.slug}
+            />
+            <GrowthCta
+              href={generatorHref}
+              label="Use in generator"
+              eventName="template_used"
+              sourcePage="template-detail"
+              sourceSlug={page.slug}
+              scenario={page.scenario}
+            />
           </div>
         </div>
         <div className="seo-panel">
@@ -140,9 +151,14 @@ export default async function TemplateDetailPage({ params }: TemplateDetailPageP
       <section className="section final-cta">
         <h2>Use this template with your own notes</h2>
         <p>Start from rough bullets, then refine the result for tone, length, and clarity.</p>
-        <Link className="primary" href={generatorHref}>
-          Generate with this format
-        </Link>
+        <GrowthCta
+          href={generatorHref}
+          label="Generate with this format"
+          eventName="template_used"
+          sourcePage="template-detail-final"
+          sourceSlug={page.slug}
+          scenario={page.scenario}
+        />
       </section>
 
       <script

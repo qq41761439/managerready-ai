@@ -68,7 +68,12 @@ export default function TemplatesPage() {
               <p>{template.template}</p>
             </div>
             <div className="actions">
-              <TemplateCopyButton title={template.title} template={template.template} />
+              <TemplateCopyButton
+                title={template.title}
+                template={template.template}
+                sourcePage="templates-index"
+                sourceSlug={template.slug}
+              />
               <Link
                 className="secondary"
                 href={`/templates/${template.slug}`}

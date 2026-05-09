@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { GrowthCta } from "../../marketing/GrowthCta";
 import { getGrowthAnswerPage, growthAnswerPages } from "../../../lib/growth";
 import { SITE_URL } from "../../../lib/marketing";
 
@@ -103,9 +104,14 @@ export default async function AnswerPage({ params }: AnswerPageProps) {
             <h1>{page.title}</h1>
             <p className="lead">{page.description}</p>
             <div className="actions">
-              <Link className="primary" href={generatorHref}>
-                Try ManagerReady AI
-              </Link>
+              <GrowthCta
+                href={generatorHref}
+                label="Try ManagerReady AI"
+                eventName="answer_cta_clicked"
+                sourcePage="answer-detail"
+                sourceSlug={page.slug}
+                scenario={page.scenario}
+              />
               <Link className="secondary" href="/examples">
                 View examples
               </Link>
@@ -172,9 +178,14 @@ export default async function AnswerPage({ params }: AnswerPageProps) {
       <section className="section final-cta">
         <h2>Try it with your own work notes</h2>
         <p>Use a few bullets. ManagerReady AI will turn them into structured English.</p>
-        <Link className="primary" href={generatorHref}>
-          Generate an update
-        </Link>
+        <GrowthCta
+          href={generatorHref}
+          label="Generate an update"
+          eventName="answer_cta_clicked"
+          sourcePage="answer-detail-final"
+          sourceSlug={page.slug}
+          scenario={page.scenario}
+        />
       </section>
 
       <script

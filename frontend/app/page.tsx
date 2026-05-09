@@ -56,6 +56,9 @@ export default function Home() {
   const [usageStatus, setUsageStatus] = useState<UsageStatus | null>(null);
   const [isUsageLoading, setIsUsageLoading] = useState(true);
   const hasTrackedPageView = useRef(false);
+  const hasTrackedQuotaReached = useRef(false);
+  const sourceAttributionRef = useRef<Record<string, string | null>>({});
+
   useEffect(() => {
     const key = "managerready_anonymous_id";
     const existing = window.localStorage.getItem(key);
@@ -64,6 +67,13 @@ export default function Home() {
     const scenarioParam = params.get("scenario");
     const toneParam = params.get("tone");
     const lengthParam = params.get("length");
+    sourceAttributionRef.current = {
+      utm_source: params.get("utm_source"),
+      utm_campaign: params.get("utm_campaign"),
+      source_page: params.get("utm_source"),
+      source_slug: params.get("utm_campaign"),
+      referrer: document.referrer || null,
+    };
 
     if (!existing) {
       window.localStorage.setItem(key, resolvedAnonymousId);
@@ -91,6 +101,7 @@ export default function Home() {
       trackEvent("page_view", {
         path: window.location.pathname,
         search: window.location.search,
+        ...sourceAttributionRef.current,
       });
       hasTrackedPageView.current = true;
     }
@@ -100,11 +111,22 @@ export default function Home() {
         scenario: hasOption(scenarios, scenarioParam) ? scenarioParam : undefined,
         tone: hasOption(tones, toneParam) ? toneParam : undefined,
         length: hasOption(lengths, lengthParam) ? lengthParam : undefined,
-        utm_source: params.get("utm_source"),
-        utm_campaign: params.get("utm_campaign"),
+        ...sourceAttributionRef.current,
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (usageStatus?.allowed === false && !hasTrackedQuotaReached.current) {
+      trackEvent("quota_reached", {
+        used: usageStatus.used,
+        limit: usageStatus.limit,
+        remaining: usageStatus.remaining,
+        ...sourceAttributionRef.current,
+      });
+      hasTrackedQuotaReached.current = true;
+    }
+  }, [usageStatus]);
 
   const canSubmit = useMemo(
     () =>
@@ -128,6 +150,7 @@ export default function Home() {
       tone,
       length,
       sample_length: SAMPLE_NOTES.length,
+      ...sourceAttributionRef.current,
     });
   }
 
@@ -138,6 +161,7 @@ export default function Home() {
       tone,
       length,
       input_length: inputLength,
+      ...sourceAttributionRef.current,
     });
     setIsLoading(true);
     setError(null);
@@ -164,6 +188,7 @@ export default function Home() {
         provider: response.metadata.provider,
         model: response.metadata.model,
         latency_ms: response.metadata.latency_ms,
+        ...sourceAttributionRef.current,
       });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Generation failed";
@@ -177,6 +202,7 @@ export default function Home() {
         length,
         input_length: inputLength,
         error: message,
+        ...sourceAttributionRef.current,
       });
     } finally {
       setIsLoading(false);
@@ -188,6 +214,7 @@ export default function Home() {
     trackEvent("refine_clicked", {
       action_type: actionType,
       output_length: result.output_text.length,
+      ...sourceAttributionRef.current,
     });
     setIsLoading(true);
     setError(null);
@@ -208,6 +235,7 @@ export default function Home() {
         provider: response.metadata.provider,
         model: response.metadata.model,
         latency_ms: response.metadata.latency_ms,
+        ...sourceAttributionRef.current,
       });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Refine failed";
@@ -215,6 +243,7 @@ export default function Home() {
       trackEvent("refine_failed", {
         action_type: actionType,
         error: message,
+        ...sourceAttributionRef.current,
       });
     } finally {
       setIsLoading(false);
@@ -230,6 +259,7 @@ export default function Home() {
       scenario,
       tone,
       length,
+      ...sourceAttributionRef.current,
     });
   }
 

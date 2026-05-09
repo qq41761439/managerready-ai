@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { GrowthCta } from "../../marketing/GrowthCta";
 import { getGrowthExamplePage, growthExamplePages } from "../../../lib/growth";
 import { SITE_URL } from "../../../lib/marketing";
 
@@ -88,9 +89,14 @@ export default async function ExampleDetailPage({ params }: ExampleDetailPagePro
           <h1>{page.title}</h1>
           <p className="lead">{page.description}</p>
           <div className="actions">
-            <Link className="primary" href={generatorHref}>
-              Try this format
-            </Link>
+            <GrowthCta
+              href={generatorHref}
+              label="Try this format"
+              eventName="example_used"
+              sourcePage="example-detail"
+              sourceSlug={page.slug}
+              scenario={page.scenario}
+            />
             <Link className="secondary" href="/templates">
               View templates
             </Link>
@@ -129,9 +135,14 @@ export default async function ExampleDetailPage({ params }: ExampleDetailPagePro
       <section className="section final-cta">
         <h2>Turn your own rough notes into this style</h2>
         <p>Choose the matching scenario and let ManagerReady AI polish the structure and English.</p>
-        <Link className="primary" href={generatorHref}>
-          Use this example style
-        </Link>
+        <GrowthCta
+          href={generatorHref}
+          label="Use this example style"
+          eventName="example_used"
+          sourcePage="example-detail-final"
+          sourceSlug={page.slug}
+          scenario={page.scenario}
+        />
       </section>
 
       <script

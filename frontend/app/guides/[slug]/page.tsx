@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { GrowthCta } from "../../marketing/GrowthCta";
 import { getGuidePage, guidePages } from "../../../lib/geo";
 import { SITE_URL } from "../../../lib/marketing";
 
@@ -102,9 +103,14 @@ export default async function GuidePage({ params }: GuidePageProps) {
             <h1>{page.title}</h1>
             <p className="lead">{page.intro}</p>
             <div className="actions">
-              <Link className="primary" href="/?utm_source=guide&utm_campaign=work-update-guide">
-                Try the generator
-              </Link>
+              <GrowthCta
+                href={`/?utm_source=guide&utm_campaign=${page.slug}`}
+                label="Try the generator"
+                eventName="guide_cta_clicked"
+                sourcePage="guide-detail"
+                sourceSlug={page.slug}
+                scenario="weekly_update"
+              />
               <Link className="secondary" href="/examples">
                 View examples
               </Link>
