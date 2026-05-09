@@ -1,0 +1,67 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+    <radialGradient id="violet" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(220 120) rotate(45) scale(700)">
+      <stop stop-color="#8B5CF6" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#8B5CF6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cyan" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1320 130) rotate(135) scale(660)">
+      <stop stop-color="#06B6D4" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#06B6D4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="cardShadow" x="70" y="340" width="1460" height="430" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="32" stdDeviation="36" flood-color="#000000" flood-opacity="0.36"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" fill="#09090B"/>
+  <rect width="1600" height="1000" fill="url(#violet)"/>
+  <rect width="1600" height="1000" fill="url(#cyan)"/>
+
+  <g transform="translate(120 88)">
+    <rect width="64" height="64" rx="20" fill="url(#accent)"/>
+    <text x="32" y="42" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800" fill="white">MR</text>
+    <text x="84" y="28" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#FAFAFA">ManagerReady AI</text>
+    <text x="84" y="58" font-family="Inter, Arial, sans-serif" font-size="18" fill="#A1A1AA">Rough notes to polished English work updates</text>
+  </g>
+
+  <text x="120" y="240" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="850" fill="#FAFAFA">Turn messy work notes</text>
+  <text x="120" y="322" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="850" fill="#FAFAFA">into manager-ready updates.</text>
+  <text x="120" y="382" font-family="Inter, Arial, sans-serif" font-size="26" fill="#A1A1AA">For non-native English professionals, remote workers, engineers, PMs, and freelancers.</text>
+
+  <g filter="url(#cardShadow)">
+    <g transform="translate(120 450)">
+      <rect width="610" height="292" rx="32" fill="#18181B" stroke="white" stroke-opacity="0.12" stroke-width="2"/>
+      <rect x="28" y="28" width="144" height="38" rx="19" fill="#27272A"/>
+      <text x="100" y="53" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800" fill="#D4D4D8">Rough notes</text>
+      <text x="38" y="112" font-family="Inter, Arial, sans-serif" font-size="27" fill="#FAFAFA">fixed login bug</text>
+      <text x="38" y="162" font-family="Inter, Arial, sans-serif" font-size="27" fill="#FAFAFA">billing QA pending</text>
+      <text x="38" y="212" font-family="Inter, Arial, sans-serif" font-size="27" fill="#FAFAFA">waiting design review</text>
+      <text x="38" y="262" font-family="Inter, Arial, sans-serif" font-size="27" fill="#FAFAFA">next week release checklist</text>
+    </g>
+
+    <g transform="translate(870 450)">
+      <rect width="610" height="292" rx="32" fill="#18181B" stroke="white" stroke-opacity="0.12" stroke-width="2"/>
+      <rect x="28" y="28" width="214" height="38" rx="19" fill="url(#accent)"/>
+      <text x="135" y="53" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800" fill="white">Manager-ready update</text>
+      <text x="38" y="112" font-family="Inter, Arial, sans-serif" font-size="26" fill="#FAFAFA">This week, I fixed the login issue</text>
+      <text x="38" y="158" font-family="Inter, Arial, sans-serif" font-size="26" fill="#FAFAFA">and continued QA for billing.</text>
+      <text x="38" y="204" font-family="Inter, Arial, sans-serif" font-size="26" fill="#FAFAFA">The main dependency is design review.</text>
+      <text x="38" y="250" font-family="Inter, Arial, sans-serif" font-size="26" fill="#FAFAFA">Next week, I will finalize release prep.</text>
+    </g>
+  </g>
+
+  <g transform="translate(120 826)">
+    <rect width="286" height="58" rx="29" fill="#27272A" stroke="white" stroke-opacity="0.12"/>
+    <text x="143" y="37" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#FAFAFA">Weekly updates</text>
+    <rect x="314" width="284" height="58" rx="29" fill="#27272A" stroke="white" stroke-opacity="0.12"/>
+    <text x="456" y="37" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#FAFAFA">Client emails</text>
+    <rect x="626" width="306" height="58" rx="29" fill="#27272A" stroke="white" stroke-opacity="0.12"/>
+    <text x="779" y="37" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#FAFAFA">Engineering reports</text>
+    <rect x="960" width="332" height="58" rx="29" fill="#27272A" stroke="white" stroke-opacity="0.12"/>
+    <text x="1126" y="37" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#FAFAFA">Performance summaries</text>
+  </g>
+</svg>

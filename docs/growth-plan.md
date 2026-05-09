@@ -161,6 +161,10 @@ Useful properties:
 - Add Open Graph metadata
 - Prepare launch copy for Product Hunt, Indie Hackers, Reddit, and LinkedIn
 - Create a short product description and FAQ for directory submissions
+- Use `docs/distribution-plan.md` as the 14-day active distribution sprint
+- Use `docs/social-posts.md`, `docs/reddit-posts.md`, and `docs/launch-kit.md` as the first posting asset library
+- Track directory submissions in `docs/directory-submissions.csv`
+- Record weekly channel learnings in `docs/distribution-results.md`
 
 ### Week 4: Measure and Expand
 
@@ -181,5 +185,6 @@ Useful properties:
 - Generator prefill links
 - Launch copy drafts
 - Search Console submission documentation
+- Active distribution docs, post drafts, launch materials, and directory submission trackers
 
 Manual account-only tasks, such as verifying Google Search Console or submitting Product Hunt from the owner's account, remain owner actions.

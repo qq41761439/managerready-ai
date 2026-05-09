@@ -286,7 +286,7 @@ export default function Home() {
       />
       <nav className="nav">
         <div className="logo">
-          <span className="logo-mark">M</span>
+          <span className="logo-mark">MR</span>
           <span>ManagerReady AI</span>
         </div>
         <div className="nav-links">
@@ -300,35 +300,52 @@ export default function Home() {
       </nav>
 
       <section className="hero">
-        <div>
+        <div className="hero-copy">
           <span className="badge">For non-native English professionals</span>
-          <h1>Turn rough work notes into manager-ready English updates.</h1>
+          <h1>Turn messy work notes into manager-ready updates.</h1>
           <p className="lead">
-            Paste messy Chinese, English, or mixed bullet points. Get a polished weekly update,
-            manager update, client update, or promotion-ready summary in seconds.
+            Paste rough Chinese, English, or mixed bullet points. Get a clear weekly update,
+            manager update, client email, or review summary without wrestling with prompts.
           </p>
-          <ul className="bullets">
-            <li>Designed for remote teams, PMs, engineers, operators, and freelancers.</li>
-            <li>Provider-agnostic AI backend: easy to switch models by quality and cost.</li>
-            <li>Python FastAPI backend, ready for auth, payments, history, and analytics.</li>
-          </ul>
 
-          <div className="example">
+          <div className="hero-actions">
+            <a className="primary hero-link" href="#generator">Try the generator</a>
+            <button className="secondary hero-link" onClick={handleTrySample} type="button">
+              Load sample notes
+            </button>
+          </div>
+
+          <div className="audience-row" aria-label="Common use cases">
+            <span>Weekly updates</span>
+            <span>Client emails</span>
+            <span>Engineering reports</span>
+            <span>Review summaries</span>
+          </div>
+
+          <div className="before-after" aria-label="Before and after example">
             <div className="example-box">
-              <h3>Before</h3>
-              <p>修复 checkout bug；dashboard 跟设计对齐；analytics 下周上线；API 有 blocker。</p>
+              <span className="example-label">Rough notes</span>
+              <p>fixed login bug<br />billing QA pending<br />waiting design review<br />next week release checklist</p>
             </div>
             <div className="example-box">
-              <h3>After</h3>
+              <span className="example-label accent">Manager-ready update</span>
               <p>
-                This week, I improved the checkout flow, aligned with design on the dashboard
-                redesign, and prepared the analytics release while tracking one API dependency.
+                This week, I fixed the login issue and continued QA for billing. The main
+                dependency is design review. Next week, I will finalize release prep.
               </p>
             </div>
           </div>
         </div>
 
-        <div className="card generator">
+        <div className="card generator" id="generator">
+          <div className="generator-head">
+            <div>
+              <span className="eyebrow">Generate now</span>
+              <h2>Write the update</h2>
+            </div>
+            <span className="status">{usageLabel}</span>
+          </div>
+
           <div className="toolbar">
             <label>
               Scenario
@@ -363,11 +380,11 @@ export default function Home() {
           </div>
 
           <label>
-            Rough notes
+            Paste rough notes
             <textarea
               value={inputText}
               maxLength={5000}
-              placeholder="Enter your work highlights, bullet points, blockers, or just rough thoughts..."
+              placeholder="Example: fixed login bug, billing QA pending, waiting design review, next week release checklist..."
               onChange={(event) => setInputText(event.target.value)}
             />
           </label>
@@ -379,9 +396,6 @@ export default function Home() {
             <button className="secondary" onClick={handleTrySample} disabled={isLoading}>
               Try sample
             </button>
-            <span className="status">
-              {usageLabel}
-            </span>
           </div>
 
           {isLoading ? (
