@@ -31,6 +31,24 @@ def test_build_gateway_passes_reasoning_effort(monkeypatch):
 
     assert isinstance(gateway.primary, OpenAICompatibleProvider)
     assert gateway.primary.reasoning_effort == "none"
+    assert gateway.primary.fallback_models == ["nvidia/nemotron-3-super-120b-a12b:free"]
+
+
+def test_build_gateway_passes_openrouter_fallback_models(monkeypatch):
+    monkeypatch.setenv("AI_PROVIDER", "openai_compatible")
+    monkeypatch.setenv("AI_PROVIDER_NAME", "openrouter")
+    monkeypatch.setenv("AI_API_KEY", "test-key")
+    monkeypatch.setenv("AI_BASE_URL", "https://openrouter.ai/api/v1")
+    monkeypatch.setenv("AI_MODEL", "old-free-model")
+    monkeypatch.setenv("AI_FALLBACK_MODELS", "custom/free-model,nvidia/nemotron-3-super-120b-a12b:free")
+
+    gateway = build_gateway_from_env(load_env=False)
+
+    assert isinstance(gateway.primary, OpenAICompatibleProvider)
+    assert gateway.primary.fallback_models == [
+        "custom/free-model",
+        "nvidia/nemotron-3-super-120b-a12b:free",
+    ]
 
 
 def test_build_gateway_allows_reasoning_effort_override(monkeypatch):

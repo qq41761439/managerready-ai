@@ -67,6 +67,7 @@ class OpenAICompatibleProvider:
         model: str,
         timeout_seconds: int = 30,
         reasoning_effort: str | None = "none",
+        fallback_models: list[str] | None = None,
         extra_headers: dict[str, str] | None = None,
     ):
         self.name = name
@@ -75,16 +76,27 @@ class OpenAICompatibleProvider:
         self.model = model
         self.timeout_seconds = timeout_seconds
         self.reasoning_effort = reasoning_effort
+        self.fallback_models = [fallback_model for fallback_model in fallback_models or [] if fallback_model != model]
         self.extra_headers = extra_headers or {}
 
     async def complete(self, messages: list[dict[str, str]], purpose: str) -> AIResult:
+        errors: list[str] = []
+        for model in [self.model, *self.fallback_models]:
+            try:
+                return await self._complete_with_model(model=model, messages=messages)
+            except ProviderError as exc:
+                errors.append(f"{model}: {exc}")
+
+        raise ProviderError(f"Provider {self.name} failed for all configured models: {'; '.join(errors)}")
+
+    async def _complete_with_model(self, *, model: str, messages: list[dict[str, str]]) -> AIResult:
         start = time.perf_counter()
         headers = {"Authorization": f"Bearer {self.api_key}"}
         headers.update(self.extra_headers)
         try:
             async with httpx.AsyncClient(timeout=self.timeout_seconds, trust_env=False) as client:
                 payload = {
-                    "model": self.model,
+                    "model": model,
                     "messages": messages,
                     "temperature": 0.4,
                 }
@@ -111,7 +123,7 @@ class OpenAICompatibleProvider:
         return AIResult(
             content=content,
             provider=self.name,
-            model=self.model,
+            model=model,
             latency_ms=int((time.perf_counter() - start) * 1000),
             input_tokens=usage.get("prompt_tokens"),
             output_tokens=usage.get("completion_tokens"),
@@ -258,19 +270,24 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
     if provider == "openai_compatible":
         timeout_seconds = _env_int("AI_TIMEOUT_SECONDS", 90)
         reasoning_effort = os.getenv("AI_REASONING_EFFORT", "none")
+        provider_name = os.getenv("AI_PROVIDER_NAME", "openai-compatible")
+        fallback_models = _env_list("AI_FALLBACK_MODELS")
+        if provider_name == "openrouter":
+            fallback_models = _openrouter_fallback_models(fallback_models)
         extra_headers = {}
-        if os.getenv("AI_PROVIDER_NAME") == "openrouter":
+        if provider_name == "openrouter":
             extra_headers = {
                 "HTTP-Referer": "https://managerready.ai",
                 "X-Title": "ManagerReady AI",
             }
         primary = OpenAICompatibleProvider(
-            name=os.getenv("AI_PROVIDER_NAME", "openai-compatible"),
+            name=provider_name,
             base_url=os.environ["AI_BASE_URL"],
             api_key=os.environ["AI_API_KEY"],
             model=os.environ["AI_MODEL"],
             timeout_seconds=timeout_seconds,
             reasoning_effort=reasoning_effort,
+            fallback_models=fallback_models,
             extra_headers=extra_headers,
         )
         fallback = MockProvider(name="mock-fallback") if os.getenv("AI_ENABLE_MOCK_FALLBACK") == "1" else None
@@ -286,6 +303,7 @@ def build_gateway_from_env(*, load_env: bool = True) -> AIGateway:
             model=os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini"),
             timeout_seconds=timeout_seconds,
             reasoning_effort=reasoning_effort,
+            fallback_models=_openrouter_fallback_models(_env_list("OPENROUTER_FALLBACK_MODELS")),
             extra_headers={
                 "HTTP-Referer": "https://managerready.ai",
                 "X-Title": "ManagerReady AI",
@@ -339,6 +357,22 @@ def _env_int(name: str, default: int) -> int:
     raw_value = os.getenv(name)
     if raw_value is None:
         return default
+
+
+def _env_list(name: str) -> list[str]:
+    raw_value = os.getenv(name, "")
+    return [item.strip() for item in raw_value.split(",") if item.strip()]
+
+
+def _openrouter_fallback_models(configured_models: list[str]) -> list[str]:
+    default_models = ["nvidia/nemotron-3-super-120b-a12b:free"]
+    seen = set()
+    models: list[str] = []
+    for model in [*configured_models, *default_models]:
+        if model not in seen:
+            seen.add(model)
+            models.append(model)
+    return models
     try:
         return int(raw_value)
     except ValueError:

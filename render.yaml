@@ -19,6 +19,8 @@ services:
         sync: false
       - key: AI_MODEL
         value: nvidia/nemotron-3-super-120b-a12b:free
+      - key: AI_FALLBACK_MODELS
+        value: nvidia/nemotron-3-super-120b-a12b:free
       - key: AI_TIMEOUT_SECONDS
         value: "90"
       - key: AI_ENABLE_MOCK_FALLBACK
