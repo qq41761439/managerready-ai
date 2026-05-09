@@ -204,6 +204,46 @@ export const growthTemplatePages: GrowthTemplatePage[] = [
       "Make the requested decision or support explicit.",
     ],
   },
+  {
+    slug: "standup-summary-template",
+    title: "Standup Summary Template",
+    metaTitle: "Standup Summary Template | ManagerReady AI",
+    description:
+      "Copy a short standup summary template for yesterday's work, today's priority, and current blockers.",
+    scenario: "standup_summary",
+    audience: "remote workers and teams using async standups",
+    template:
+      "Yesterday, I completed [completed work]. Today, I am focusing on [priority]. I am blocked by [blocker or dependency]. I need [support, decision, or input] to continue.",
+    exampleInput:
+      "yesterday fixed export bug, today billing QA, blocked by test account access, need ops help",
+    exampleOutput:
+      "Yesterday, I fixed the export bug. Today, I am focusing on billing QA. I am currently blocked by test account access and need help from operations to continue validation.",
+    tips: [
+      "Keep it short enough for a daily check-in.",
+      "Make blockers obvious.",
+      "Avoid turning a standup into a full weekly report.",
+    ],
+  },
+  {
+    slug: "promotion-summary-template",
+    title: "Promotion Summary Template",
+    metaTitle: "Promotion Summary Template | ManagerReady AI",
+    description:
+      "Use a promotion summary template to frame achievements, scope, impact, and growth evidence.",
+    scenario: "promotion_summary",
+    audience: "professionals preparing promotion packets or achievement summaries",
+    template:
+      "Over this cycle, I expanded my scope by [scope change], delivered [major outcome], improved [system/process], and created impact through [impact]. This demonstrates growth in [level expectation] because [evidence].",
+    exampleInput:
+      "owned analytics launch, coordinated eng/design/support, reduced manual reporting, mentored junior teammate",
+    exampleOutput:
+      "Over this cycle, I owned the analytics launch, coordinated across engineering, design, and support, reduced manual reporting work, and mentored a junior teammate. These contributions demonstrate broader ownership and stronger cross-functional execution.",
+    tips: [
+      "Show scope, not only tasks.",
+      "Connect work to team or business outcomes.",
+      "Use concrete evidence for level expectations.",
+    ],
+  },
 ];
 
 export const growthExamplePages: GrowthExamplePage[] = [
@@ -342,6 +382,52 @@ export const growthExamplePages: GrowthExamplePage[] = [
         before: "owned billing retries, improved tests, handled incident follow-up, documented release process",
         after:
           "Over this cycle, I owned billing retry improvements, strengthened test coverage, supported incident follow-up, and documented the release process. These contributions improved reliability and made future releases easier for the team to execute.",
+      },
+    ],
+  },
+  {
+    slug: "before-and-after-work-update-examples",
+    title: "Before and After Work Update Examples",
+    metaTitle: "Before and After Work Update Examples | ManagerReady AI",
+    description:
+      "Compare rough work notes with polished English updates for managers, clients, and remote teams.",
+    scenario: "weekly_update",
+    audience: "professionals who want to see how rough notes become polished updates",
+    examples: [
+      {
+        label: "Messy task list to weekly summary",
+        before: "support tickets, export bug, onboarding doc, dashboard QA started, approval pending",
+        after:
+          "This week, I supported customer tickets, fixed an export bug, drafted onboarding documentation, and started dashboard QA. The main blocker is pending approval. Next week, I will continue QA and follow up on the approval process.",
+      },
+      {
+        label: "Raw blockers to manager-ready update",
+        before: "migration code done, legal still reviewing, finance date unknown, rollout doc can start",
+        after:
+          "The migration code is complete. Legal review and finance timing are still open dependencies, so the rollout date is not confirmed yet. While waiting, I will prepare the rollout documentation and validation checklist.",
+      },
+    ],
+  },
+  {
+    slug: "english-status-update-examples-for-non-native-speakers",
+    title: "English Status Update Examples for Non-Native Speakers",
+    metaTitle: "English Status Update Examples for Non-Native Speakers | ManagerReady AI",
+    description:
+      "Examples that help non-native English professionals turn multilingual notes into clear status updates.",
+    scenario: "manager_update",
+    audience: "non-native English professionals working in global teams",
+    examples: [
+      {
+        label: "Chinese and English mixed notes",
+        before: "修了登录 bug, 和 ops 查数据问题, release approval 卡住, 下周做 dashboard QA",
+        after:
+          "This week, I fixed a login bug, investigated a data issue with the operations team, and prepared for dashboard QA. The release is currently blocked by approval. Next week, I plan to complete dashboard QA and follow up on the approval process.",
+      },
+      {
+        label: "Simple English to professional update",
+        before: "I did report page, some API problem, need designer check, next week finish mobile",
+        after:
+          "This week, I worked on the report page and identified an API issue that still needs follow-up. I also need design review before finalizing the page. Next week, I plan to complete the mobile layout after the review is resolved.",
       },
     ],
   },
@@ -610,6 +696,72 @@ export const growthAnswerPages: GrowthAnswerPage[] = [
         question: "How can I sound more professional?",
         answer:
           "Use specific outcomes, clear blockers, and next steps. Avoid vague claims that are not supported by your notes.",
+      },
+    ],
+  },
+  {
+    slug: "what-problems-does-managerready-ai-solve",
+    title: "What Problems Does ManagerReady AI Solve?",
+    metaTitle: "What Problems Does ManagerReady AI Solve? | ManagerReady AI",
+    description:
+      "ManagerReady AI solves the recurring problem of turning messy work notes into clear English updates.",
+    scenario: "manager_update",
+    answer:
+      "ManagerReady AI helps with a common workplace writing problem: people know what they did, but the notes are scattered, multilingual, too technical, or too informal to send directly. The tool turns those notes into structured English updates for managers, clients, teams, or performance reviews.",
+    keyPoints: [
+      "It reduces time spent rewriting rough notes.",
+      "It helps non-native English speakers sound clearer and more professional.",
+      "It makes blockers, risks, and next steps easier to see.",
+      "It creates repeatable update formats for recurring workplace communication.",
+    ],
+    example: {
+      before: "data export done, customer issue checked, launch depends on approval, next week mobile QA",
+      after:
+        "This week, I completed the data export, investigated a customer issue, and prepared for mobile QA. The launch is currently dependent on approval. Next week, I plan to continue mobile QA and follow up on the approval status.",
+    },
+    faqs: [
+      {
+        question: "What is the main pain point?",
+        answer:
+          "The main pain point is turning rough work facts into a concise update that a manager or client can quickly understand.",
+      },
+      {
+        question: "Does it help with blockers?",
+        answer:
+          "Yes. It separates blockers and risks so they are visible instead of buried inside a task list.",
+      },
+    ],
+  },
+  {
+    slug: "how-to-write-better-status-updates-in-english",
+    title: "How to Write Better Status Updates in English",
+    metaTitle: "How to Write Better Status Updates in English | ManagerReady AI",
+    description:
+      "A practical answer for writing clearer English status updates with progress, blockers, and next steps.",
+    scenario: "weekly_update",
+    answer:
+      "To write better status updates in English, start with facts, group related work into outcomes, separate blockers from progress, and end with next steps. A strong update is easy to scan and helps the reader understand what changed and what needs attention.",
+    keyPoints: [
+      "Use short sections instead of one long paragraph.",
+      "Lead with outcomes, not every small task.",
+      "State blockers directly and professionally.",
+      "Use concrete next steps to show ownership.",
+    ],
+    example: {
+      before: "worked on QA, fixed some bugs, waiting review, probably release next week",
+      after:
+        "This week, I continued QA and fixed several issues found during testing. The release is waiting on review, so the timeline is not fully confirmed yet. Next week, I plan to complete review follow-up and prepare the release checklist.",
+    },
+    faqs: [
+      {
+        question: "What should every status update include?",
+        answer:
+          "Include progress, blockers or risks, and next steps. Add metrics when you have real numbers.",
+      },
+      {
+        question: "How long should a status update be?",
+        answer:
+          "Most workplace status updates should be short enough to scan, often between a few bullets and 200 words.",
       },
     ],
   },
