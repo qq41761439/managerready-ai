@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-05-14T05:56:17Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-05-15T06:04:02Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "inclusionai/ring-2.6-1t:free",
