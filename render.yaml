@@ -20,7 +20,7 @@ services:
       - key: AI_MODEL
         value: nvidia/nemotron-3-super-120b-a12b:free
       - key: AI_FALLBACK_MODELS
-        value: inclusionai/ring-2.6-1t:free,poolside/laguna-xs.2:free,poolside/laguna-m.1:free,arcee-ai/trinity-large-thinking:free,nvidia/nemotron-3-super-120b-a12b:free,minimax/minimax-m2.5:free,openrouter/free,liquid/lfm-2.5-1.2b-thinking:free
+        value: poolside/laguna-xs.2:free,poolside/laguna-m.1:free,arcee-ai/trinity-large-thinking:free,nvidia/nemotron-3-super-120b-a12b:free,minimax/minimax-m2.5:free,openrouter/free,liquid/lfm-2.5-1.2b-thinking:free,liquid/lfm-2.5-1.2b-instruct:free
       - key: AI_TIMEOUT_SECONDS
         value: "90"
       - key: AI_ENABLE_MOCK_FALLBACK
