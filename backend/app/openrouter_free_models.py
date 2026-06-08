@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-06-07T06:42:12Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-06-08T07:03:11Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "nvidia/nemotron-3-ultra-550b-a55b:free",
