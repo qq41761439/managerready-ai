@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-06-26T06:20:35Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-06-27T06:01:44Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "cohere/north-mini-code:free",
