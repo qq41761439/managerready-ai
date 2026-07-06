@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-07-05T06:14:18Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-07-06T06:46:33Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "poolside/laguna-xs-2.1:free",
