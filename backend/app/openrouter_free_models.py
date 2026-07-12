@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-07-11T05:22:02Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-07-12T05:37:22Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "tencent/hy3:free",
