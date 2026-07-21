@@ -3,10 +3,9 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-07-20T05:48:57Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-07-21T05:29:36Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
-    "tencent/hy3:free",
     "poolside/laguna-xs-2.1:free",
     "cohere/north-mini-code:free",
     "nvidia/nemotron-3-ultra-550b-a55b:free",
@@ -14,4 +13,5 @@ OPENROUTER_FREE_FALLBACK_MODELS = [
     "nvidia/nemotron-3-super-120b-a12b:free",
     "openrouter/free",
     "nvidia/nemotron-3-nano-30b-a3b:free",
+    "nvidia/nemotron-nano-9b-v2:free",
 ]
