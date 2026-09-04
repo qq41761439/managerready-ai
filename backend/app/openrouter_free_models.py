@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-09-03T07:09:52Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-09-04T07:13:21Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "inclusionai/ling-3.0-flash-fin:free",
