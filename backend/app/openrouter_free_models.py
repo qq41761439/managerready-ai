@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-10-06T08:58:12Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-10-07T08:38:00Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "apodex/apodex-1.1-mini:free",
