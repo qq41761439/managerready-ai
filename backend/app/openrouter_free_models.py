@@ -3,9 +3,10 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-10-16T07:08:17Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-10-17T06:56:36Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
+    "xingchen-agi/xing4.0-29b-a4b:free",
     "liquid/lfm-2.5-2.6b:free",
     "nvidia/nemotron-3.5-lightning:free",
     "poolside/laguna-s-2.1:free",
