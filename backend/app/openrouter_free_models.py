@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-10-17T06:56:36Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-10-18T07:12:50Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "xingchen-agi/xing4.0-29b-a4b:free",
