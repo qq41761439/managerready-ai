@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-10-30T08:38:15Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-10-31T08:24:42Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "recursive/flint-v1.0:free",
