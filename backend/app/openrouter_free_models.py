@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-11-09T09:47:01Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-11-10T09:48:35Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "liquid/lfm-3-1.7b:free",
