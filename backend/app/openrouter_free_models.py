@@ -3,7 +3,7 @@
 Run `python3 scripts/update_openrouter_free_models.py` from the repo root to refresh.
 """
 
-OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-11-18T10:07:59Z"
+OPENROUTER_FREE_MODELS_UPDATED_AT = "2026-11-19T10:18:49Z"
 
 OPENROUTER_FREE_FALLBACK_MODELS = [
     "baidu/ernie-5.5-flash-preview:free",
